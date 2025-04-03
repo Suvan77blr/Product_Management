@@ -3,11 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Users</title>
+    <title>Manage Users</title>
     <link rel="stylesheet" href="../Styles/styles.css">
-
 </head>
 <body>
+
+    <button id="openAddUserPopup">Add User</button>
     
+          
 </body>
+<script type="module">
+    import "../Components/AddUserComponent.js";
+
+    document.getElementById("openAddUserPopup").addEventListener("click", (event) => {
+        event.stopPropagation();
+        const popup = document.createElement("add-user-component");
+
+        popup.style.position = "fixed";
+        popup.style.left = "50%";
+        popup.style.top = "50%";
+        popup.style.transform = "translate(-50%, -50%)";
+        
+        document.body.onclick = () => {
+            document.querySelectorAll("add-user-component").forEach((element) => {
+                element.remove();
+            });
+        };
+
+        document.body.appendChild(popup);
+    });
+</script>
 </html>
