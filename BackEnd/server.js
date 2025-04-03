@@ -31,9 +31,9 @@ app.get("/superUser", (req, res) => {
 // Route to serve '/addUser' request.
 app.post("/addUser", async (req, res) => {
     try {
-        const { username, email, role } = req.body;
+        const { username, password, email, role } = req.body;
         const newUser = new User({ 
-            username, email, role 
+            username, password, email, role 
         });
 
         await newUser.save(); // Store in MongoDB
