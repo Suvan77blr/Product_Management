@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Products</title>
+    <link rel="stylesheet" href="../Styles/styles.css">
+</head>
+<body>
+    <h1>Product Inventory</h1>
+    <div class="container">
+        <table border="1" class="product-list">
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        document.body.onload = ()=>{
+        const products = [
+            {
+                name: "ProductA",
+                price: 500,
+            },
+            {
+                name: "ProductB",
+                price: 1500,
+            },
+            {
+                name: "ProductC",
+                price: 2500,
+            }
+        ];
+        const productList = document.querySelector(".product-list");
+        console.log(productList);
+        for(var prod of products) {
+            const row = document.createElement("tr");
+            for(var key in prod) {
+                const td = document.createElement("td");
+                td.innerHTML = prod[key];
+                row.appendChild(td);
+            }
+            productList.appendChild(row);
+        }
+    }
+    </script>
+    
+</body>
+</html>
