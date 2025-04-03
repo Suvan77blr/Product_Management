@@ -47,7 +47,7 @@ class AddUserComponent extends HTMLElement {
                     const userData = { username, email, role };
             
                     try {
-                        const response = await fetch("http://localhost:3001/addUser", {
+                        const response = await fetch("http://localhost:3000/addUser", {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify(userData),
