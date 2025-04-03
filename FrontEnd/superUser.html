@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super User - Product Management</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: #F6F0F0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #FFF7F3;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+        }
+        h2 {
+            color: #F2E2B1;
+        }
+        .actions {
+            margin-top: 20px;
+        }
+        button {
+            background-color: #F2E2B1;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #E2C98D;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Super User Dashboard</h2>
+        <div class="actions">
+            <button onclick="manageUsers()">Manage Users</button>
+            <button onclick="manageProducts()">Manage Products</button>
+            <button onclick="viewReports()">View Reports</button>
+        </div>
+    </div>
+    <script>
+        function manageUsers() {
+            alert("Managing Users...");
+        }
+        function manageProducts() {
+            alert("Managing Products...");
+        }
+        function viewReports() {
+            alert("Viewing Reports...");
+        }
+    </script>
+</body>
+</html>
