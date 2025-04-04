@@ -9,6 +9,9 @@ class AddUserComponent extends HTMLElement {
                     <label for="username">Username:</label>
                     <input type="text" id="username" placeholder="Enter username" required>
 
+                    <label for="password">Password:</label>
+                    <input type="password" id="pasword" placeholder="Enter password" required>
+
                     <label for="email">Email:</label>
                     <input type="email" id="email" placeholder="Enter email" required>
 
@@ -36,14 +39,15 @@ class AddUserComponent extends HTMLElement {
         // Handle form submission
         this.querySelector("#submitUser").addEventListener("click", () => {
             const username = this.querySelector("#username").value.trim();
+            const password = this.querySelector("#password").value;
             const email = this.querySelector("#email").value.trim();
             const role = this.querySelector("#role").value;
 
-            if (username && email) {
+            if (username && password && email) {
                 this.addEventListener("submit", async (event) => {
                     event.preventDefault(); // Prevent form from reloading the page
             
-                    const userData = { username, email, role };
+                    const userData = { username, password, email, role };
             
                     try {
                         const response = await fetch("http://localhost:3000/addUser", {

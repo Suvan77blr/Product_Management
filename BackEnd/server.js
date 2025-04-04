@@ -3,24 +3,22 @@ const path = require("path");
 const app = express();
 const PORT = 3000;
 const mongoose = require("mongoose");
+const User = require("../BackEnd/UserSchema.js");       // Importing the User Schema.
 
+// MongoDB Connection.
 mongoose.connect("mongodb://localhost:27017/product_management", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
-.then(() => console.log("✅ MongoDB Connected"))
-.catch(err => console.error("❌ MongoDB Connection Error:", err));
-const userSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    role: { type: String, enum: ["user", "superuser"], required: true }
-});
+    .then(() => console.log("✅ MongoDB Connected"))
+    .catch(err => console.error("❌ MongoDB Connection Error:", err));
 
-module.exports = mongoose.model("User", userSchema);
+// Should'nt be exported here...
+// module.exports = mongoose.model("User", userSchema);
 
-const User = require("./models/User");
 app.use(express.static(path.join(__dirname, "../FrontEnd"))); 
 
+// Default OR Main ROUTE.
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "../FrontEnd/Pages/LoginPage.html"));
 });
@@ -30,17 +28,29 @@ app.get("/superUser", (req, res) => {
     res.sendFile(path.join(__dirname, "../FrontEnd/Pages/SuperUserPage.html"));
 });
 
+// Route to serve '/addUser' request.
 app.post("/addUser", async (req, res) => {
     try {
-        const { username, email, role } = req.body;
-        const newUser = new User({ username, email, role });
+        const { username, password, email, role } = req.body;
+        const newUser = new User({ 
+            username, password, email, role 
+        });
 
         await newUser.save(); // Store in MongoDB
-        res.json({ message: "User added successfully!" });
-    } catch (error) {   
-        res.status(500).json({ message: "Error adding user" });
+
+        // Setting the response.
+        res.json({ 
+            message: "New-User added successfully!" 
+        });
+    } 
+    catch (error) {   
+        res.status(500).json({ 
+            message: "Error adding user" 
+        });
     }
 });
+
+
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });

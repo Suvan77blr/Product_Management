@@ -2,7 +2,7 @@
     --primary-bg-color: #E4EFE7;
     --secondary-bg-color: #FAF1E6;
 
-    --primary-heading-color: #F2E2B1;
+    --primary-heading-color: #f1d684;
 
     --primary-button-color: #F2E2B1;
     --button-hover-color: #E2C98D;
@@ -72,11 +72,12 @@ button:hover {
 }
 
 
-input, select {
+/* Not sure why these styles were added ... if needed we'll check it later. */
+/* input, select {
     margin-bottom: 10px;
     padding: 8px;
     width: 100%;
-}
+} */
 
 button {
     background-color: #F2E2B1;
@@ -84,10 +85,22 @@ button {
     padding: 10px;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 5px;
+    margin-top: 10px;
+    text-align: center;
 }
 
-button:hover {
+button:hover, a > button:hover {
     background-color: #E2C98D;
 }
 
+.super-user-container > .actions{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+a {
+    text-decoration: none;
+    color: #000000;
+}

@@ -16,14 +16,15 @@ class SuperUserComponent extends HTMLElement
     {
         this.innerHTML = `
             <div class="super-user-container container">
-                    <h2>Super User Dashboard</h2>
-                    <div class="actions">
-                        <a href="./ManageUsers.html"> <button>Manage Users</button></a>
-                        <button class="manage-products-button">Manage Products</button>
-                        <button class="view-reports-button">View Reports</button
-            </div>
-        </div>
+                <h2>Super User Dashboard</h2>
+                <div class="actions">
+                    <button><a href="./ManageUsers.html">Manage Users</a></button>
+                    <button class="manage-products-button">Manage Products</button>
+                    <button class="view-reports-button">Display Reports</button>
+                </div>
+            </div>  
         `;
+
         this.querySelector(".super-user-container").addEventListener("click", (event) => {
             event.stopPropagation();
         });
