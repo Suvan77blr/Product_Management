@@ -1,6 +1,18 @@
 {
+  "name": "product_management",
+  "version": "1.0.0",
+  "description": "This a product catalogue mern stack project using mongodb",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node BackEnd/server.js"
+  },
+  "type": "module",
+  "author": "Sooraj Sajjan Suvan B U",
+  "license": "ISC",
   "dependencies": {
     "dotenv": "^16.4.7",
-    "mongoose": "^8.13.1"
+    "express": "^5.1.0",
+    "mongo": "^0.1.0",
+    "mongoose": "^8.13.2"
   }
 }
