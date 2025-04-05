@@ -1,5 +1,23 @@
 {
+  "name": "product_management",
+  "version": "1.0.0",
+  "description": "This a product catalogue mern stack project using mongodb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon BackEnd/server.js"
+  },
+  "keywords": [],
+  "author": "Sooraj Sajjan Suvan B U",
+  "license": "ISC",
   "dependencies": {
-    "mongoose": "^8.13.1"
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "mongo": "^0.1.0",
+    "mongoose": "^8.13.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
   }
 }

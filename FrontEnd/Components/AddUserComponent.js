@@ -7,23 +7,25 @@ class AddUserComponent extends HTMLElement {
         this.innerHTML = `
             <div class="popup-container">
                     <h2>Add New User</h2>
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" placeholder="Enter username" required>
+                    <form id="addUserForm">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" placeholder="Enter username" required>
 
-                    <label for="password">Password:</label>
-                    <input type="password" id="pasword" placeholder="Enter password" required>
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" placeholder="Enter password" required>
 
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" placeholder="Enter email" required>
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" placeholder="Enter email" required>
 
-                    <label for="role">Role:</label>
-                    <select id="role">
-                        <option value="user">Normal User</option>
-                        <option value="superuser">Super User</option>
-                    </select>
+                        <label for="role">Role:</label>
+                        <select id="role">
+                            <option value="user">Normal User</option>
+                            <option value="superuser">Super User</option>
+                        </select>
 
-                    <button id="submitUser">Add User</button>
-                    <button class="close-popup">Close</button>
+                        <button type="submit" id="submitUser">Add User</button>
+                        <button class="close-popup">Close</button>
+                    </form>
             </div>
         `;
 
@@ -38,37 +40,36 @@ class AddUserComponent extends HTMLElement {
         });
 
         // Handle form submission
-        this.querySelector("#submitUser").addEventListener("click", () => {
+        const form = this.querySelector("#addUserForm");
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
             const username = this.querySelector("#username").value.trim();
             const password = this.querySelector("#password").value;
             const email = this.querySelector("#email").value.trim();
             const role = this.querySelector("#role").value;
 
             if (username && password && email) {
-                this.addEventListener("submit", async (event) => {
-                    event.preventDefault(); // Prevent form from reloading the page
-            
-                    const userData = { username, password, email, role };
-            
-                    try {
-                        const response = await fetch("http://localhost:3000/addUser", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify(userData),
-                        });
-            
-                        const result = await response.json();
-                        alert(result.message); // Show success or error message
-            
-                        if (response.ok) {
-                            // Reset form after successful submission
-                            addUserForm.reset();
-                        }
-                    } catch (error) {
-                        alert("Error adding user");
+                const userData = { username, password, email, role };
+
+                try {
+                    const response = await fetch("http://localhost:3000/users", { // ✅ Use correct route
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(userData),
+                    });
+
+                    const result = await response.json();
+                    alert(result.message || "User added!");
+
+                    if (response.ok) {
+                        form.reset();       // ✅ Clear form
+                        this.remove();      // ✅ Close popup
                     }
-                });
-                this.remove(); // Close popup after adding user
+                } catch (error) {
+                    alert("Error adding user");
+                    console.error(error);
+                }
             } else {
                 alert("Please fill in all fields.");
             }
