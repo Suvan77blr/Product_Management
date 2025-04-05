@@ -2,7 +2,6 @@ class AddUserComponent extends HTMLElement {
     constructor() {
         super();
     }
-
     connectedCallback() {
         this.innerHTML = `
             <div class="popup-container">
