@@ -50,26 +50,34 @@ const createUser= async (req,res)=>{
     }
     catch(error)
     {
-        // console.error("Error in deleting user:",error.message);
+        console.error("Error in deleting user:",error.message);
         res.status(500).json({success:false,message:"Server Error"});
     }
 };
 
-const updateUser = async(req,res)=>{
-    const {id} = req.params;
-    const user = req.body;
-    if(!mongoose.Types.ObjectId.isValid(id))
-    {
-        return res.status(404).json({success:false,message:"No such Product found"});
+const updateUser = async (req, res) => {
+    const { username, email, ...updateData } = req.body;
+
+    if (!username || !email) {
+        return res.status(400).json({ success: false, message: "username and Email are required." });
     }
-    try{
-        const updatedUser=await User.findByIdAndUpdate(id,user,{new:true});
-        res.status(200).json({success:true,data:updatedUser});   
-    }
-    catch(error)
-    {
-        console.error("Error in updating the user:",error.message);
-        res.status(500).json({success:false, message:"Server Error"});
+
+    try {
+        const updatedUser = await User.findOneAndUpdate(
+            { username, email },
+            updateData,
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ success: false, message: "User not found." });
+        }
+
+        res.status(200).json({ success: true, data: updatedUser });
+
+    } catch (error) {
+        console.error("Error updating user:", error.message);
+        res.status(500).json({ success: false, message: "Server Error" });
     }
 };
 
