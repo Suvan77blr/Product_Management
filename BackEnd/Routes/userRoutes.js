@@ -6,7 +6,7 @@ const userRouter=express.Router();
 
 userRouter.get("/",getUsers);
 userRouter.post("/",createUser);
-userRouter.delete("/:id",deleteUser);
-userRouter.put("/:id",updateUser);
+userRouter.delete("/byDetails",deleteUser);
+userRouter.put("/byDetails",updateUser);
 
 module.exports=userRouter;

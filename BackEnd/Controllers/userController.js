@@ -35,19 +35,22 @@ const createUser= async (req,res)=>{
 };
 
  const deleteUser =async (req,res)=>{
-    const {id}=req.params;  //id is just a variable here,it can match to anything
-    if(!mongoose.Types.ObjectId.isValid(id))
-    {
-        return res.status(404).json({success:false,message:"No such User found"});
-    }
+    const {username,email}=req.body;  //we assume we will be getting username and email and build the endpoint accordingly
+
     try{
-        await User.findByIdAndDelete(id);
-        res.status(200).json({success:true,message:"User Deleted"});
+        const user =await User.findOneAndDelete({username,email});
+        if(!user)
+        {
+            return res.status(400).json({success:false,message:"User not found"});
+        }
+        else{
+            res.status(200).json({success:true,message:"User Deleted successfully"});
+        }
 
     }
     catch(error)
     {
-        console.error("Error in deleting user:",error.message);
+        // console.error("Error in deleting user:",error.message);
         res.status(500).json({success:false,message:"Server Error"});
     }
 };

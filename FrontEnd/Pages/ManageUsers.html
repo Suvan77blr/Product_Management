@@ -24,7 +24,7 @@
 <script type="module">
     import "../Components/AddUserComponent.js";
     import "../Components/ViewUsersComponent.js";
-
+    import "../Components/DeleteUserComponent.js";
     document.getElementById("openAddUserButton").addEventListener("click", (event) => {
         event.stopPropagation();
         const popup = document.createElement("add-user-component");
@@ -44,6 +44,7 @@
     });
 
     document.getElementById("viewUsersButton").addEventListener("click",async (event)=>{
+
         event.stopPropagation();
         let usersList;
         try {
@@ -85,5 +86,25 @@
 
         document.body.appendChild(viewUsersPopup);
     })
+
+    document.getElementById("deleteUserButton").addEventListener("click",(event)=>{
+        event.stopPropagation();
+        const   deleteUserPopup = document.createElement("delete-user-component");
+
+        deleteUserPopup.style.position = "fixed";
+        deleteUserPopup.style.left = "50%";
+        deleteUserPopup.style.top = "50%";
+        deleteUserPopup.style.transform = "translate(-50%, -50%)";
+
+        document.body.onclick = () => {
+            document.querySelectorAll("delete-user-component").forEach((element) => {
+                element.remove();
+            });
+        };
+
+    document.body.appendChild(deleteUserPopup);
+    })
+
+
 </script>
 </html>

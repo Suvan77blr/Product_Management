@@ -58,7 +58,7 @@ button:hover {
     background-color: var(--button-hover-color);
 } */
 
-.popup-container {
+.popup-container, .delete-user-popup-container{
     display: flex;
     flex-direction: column;
     position: fixed;
@@ -87,6 +87,15 @@ button:hover {
     height: 60%;
     text-align: center;
 }
+ /* {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+
+} */
+
 
 button {
     background-color: #F2E2B1;
