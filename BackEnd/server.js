@@ -3,6 +3,8 @@ const path = require("path");
 const mongoose = require("mongoose");
 const { connectDB } = require("./Database/ConnectorDB.js");
 const userRouter = require("./Routes/userRoutes.js");
+const productRouter = require("./Routes/productRoutes.js");
+
 
 const app = express();
 const PORT = 3000;
@@ -20,8 +22,11 @@ app.get("/superUser", (req, res) => {
 });
 app.get("/manage-users",(req,res)=>{
     res.sendFile(path.join(__dirname,"../FrontEnd/Pages/ManageUsers.html"))
-})
+});
+
+// Custom routes definition.
 app.use("/users", userRouter);
+app.use("/products", productRouter);
 
 
 app.listen(PORT, () => {

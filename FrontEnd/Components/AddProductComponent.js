@@ -41,12 +41,53 @@ class AddProductComponent extends HTMLElement
 
         // Form Submission Logic.
         const productForm = this.querySelector("#addProductForm");
-        productForm.addEventListener("submit", (event) => {
-            event.preventDefault();
-            alert("Form Logic yet to be handled!");
-            productForm.reset();
-        })
         
+        productForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const productName = this.querySelector("#productName").value.trim();
+            const quantity = this.querySelector("#quantity").value;
+            const price = this.querySelector("#price").value;
+            const imageInput = this.querySelector("#image");
+            const imageFile = imageInput.files[0];
+            // Here imageFile => undefined, if no image is given.
+
+
+            if(productName && quantity && price)
+            {
+                // Normal JSON.stringify will not work as we have "file" input.
+                const formData = new FormData();
+                formData,append("name", productName);
+                formData,append("quantity", quantity);
+                formData.append("price", price);
+
+                if(imageFile) {
+                    formData.append("image", imageFile);
+                }
+
+                try {
+                    const response = await fetch("http://localhost:3000/products", {
+                            method: "POST",
+                            body: formData
+                            // No headers, browsers will set the boundary it seems...!
+                    });
+
+                    const result = await response.json();
+                    alert(result.message || "Product added!");
+
+                    if(response.ok) {
+                        productForm.reset();
+                        this.remove();
+                    }
+                }
+                catch(error) {
+                    alert("Error adding product");
+                    console.error(error);
+                }
+            } else {
+                alert("Please fill in all fields");
+            }
+        });        
     }
 }
 
