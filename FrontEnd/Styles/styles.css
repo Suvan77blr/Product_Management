@@ -120,6 +120,13 @@ button:hover, a > button:hover {
     align-items: center;
 }
 
+.products-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
 a {
     text-decoration: none;
     color: #000000;
