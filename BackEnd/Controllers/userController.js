@@ -28,7 +28,7 @@ const createUser= async (req,res)=>{
     }
     catch(error)
     {
-        console.error("Error in creation of product:",error.message);
+        console.error("Error in creation of user:",error.message);
         res.status(500).json({success:false,message:"Server Error"});
     }
 
