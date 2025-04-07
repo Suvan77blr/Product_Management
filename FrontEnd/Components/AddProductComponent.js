@@ -64,9 +64,9 @@ class AddProductComponent extends HTMLElement
                 if(imageFile) {
                     formData.append("image", imageFile);
                 }
-                for (const [key, value] of formData.entries()) {
-                    console.log(`${key}:`, value);
-                }
+                // for (const [key, value] of formData.entries()) {
+                //     console.log(`${key}:`, value);
+                // }
                 try {
                     const response = await fetch("http://localhost:3000/products", {
                             method: "POST",

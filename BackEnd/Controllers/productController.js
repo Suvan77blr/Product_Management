@@ -55,7 +55,7 @@ const createProduct = async (req,res) => {
             });
         }
 
-        const image = req.file ? req.file.path : null;
+        const image = req.file ? "uploads/" + req.file.filename : null;
 
         const newProduct = new Product({ name, quantity, price, image });
 

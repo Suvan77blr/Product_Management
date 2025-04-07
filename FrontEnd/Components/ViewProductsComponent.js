@@ -9,34 +9,26 @@ class ViewProductsComponent extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `
             <div class="view-popup-container">
+                
+            </div>
+        `;
+
+        const popupContainer =this.querySelector(".view-popup-container");
+        // popupContainer.innerHTML= this.usersList;
+        if (Array.isArray(this.productsList)) {
+            popupContainer.innerHTML = `
                 <h2>Products</h2>
                 <div class="product-grid">
                     ${this.productsList.map(p => `
                         <div class="product-card">
-                            <img src="http://localhost:3000/${p.image}" alt="${p.name}" />
+                            <script>console.log("image",p.image);</script>
+                            <img src="http://localhost:3000/${p.image}" alt="${p.name}" style="width: 150px; height: 150px; object-fit: cover; border-radius: 12px" />
                             <h3>${p.name}</h3>
                             <p>Price: ₹${p.price}</p>
                             <p>Stock: ${p.quantity}</p>
                         </div>
                     `).join("")}
                 </div>
-            </div>
-        `;
-
-        const popupContainer =this.querySelector(".viewProducts-popup-container");
-        // popupContainer.innerHTML= this.usersList;
-        if (Array.isArray(this.productsList)) {
-            popupContainer.innerHTML = `
-                <table>
-                    <tr><th>Name</th><th>Email</th><th>Role</th></tr>
-                    ${this.usersList.map(user => `
-                        <tr>
-                            <td>${user.username}</td>
-                            <td>${user.email}</td>
-                            <td>${user.role}</td>
-                        </tr>
-                    `).join("")}
-                </table>
             `;
         } else {
             popupContainer.innerText = this.productsList; // for error message string

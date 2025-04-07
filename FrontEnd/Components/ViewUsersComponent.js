@@ -13,7 +13,7 @@ class ViewUsersComponent extends HTMLElement {
             </div>
         `;
 
-        const popupContainer =this.querySelector(".viewUsers-popup-container");
+        const popupContainer =this.querySelector(".view-popup-container");
         // popupContainer.innerHTML= this.usersList;
         if (Array.isArray(this.usersList)) {
             popupContainer.innerHTML = `
