@@ -20,7 +20,7 @@ class AddProductComponent extends HTMLElement
                         <input type="number" id="price" placeholder="Enter price" min=0 required>
 
                         <label for="image">Product Image:</label>
-                        <input type="file" accept="image/*">
+                        <input type="file" id="image" accept="image/*">
 
                         <button type="submit" id="submitProduct">Add Product</button>
                         <button class="close-popup">Close</button>
@@ -64,7 +64,9 @@ class AddProductComponent extends HTMLElement
                 if(imageFile) {
                     formData.append("image", imageFile);
                 }
-
+                for (const [key, value] of formData.entries()) {
+                    console.log(`${key}:`, value);
+                }
                 try {
                     const response = await fetch("http://localhost:3000/products", {
                             method: "POST",
@@ -72,17 +74,19 @@ class AddProductComponent extends HTMLElement
                             // No headers, browsers will set the boundary it seems...!
                     });
 
-                    const result = await response.json();
-                    alert(result.message || "Product added!");
+                    // const result = await response.json();
+                    // alert(result.message || "Product added!");
+                    const rawResponse = await response.text();
+                    console.log("Raw Response from server:", rawResponse);
 
-                    if(response.ok) {
+
+                    if(rawResponse.ok) {
                         productForm.reset();
                         this.remove();
                     }
                 }
                 catch(error) {
-                    alert("Error adding product");
-                    console.error(error);
+                    console.error("Error while adding the product:",error.message);
                 }
             } else {
                 alert("Please fill in all fields");

@@ -72,7 +72,7 @@ button:hover {
     width: 300px;
     text-align: center;
 }
-.viewUsers-popup-container{
+.view-popup-container{
     display: flex;
     flex-direction: column;
     position: fixed;

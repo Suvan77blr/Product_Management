@@ -29,10 +29,48 @@
         const viewProductsButton = document.querySelector(".viewProductsButton");
         const addProductButton = document.querySelector(".addProductButton");
 
-        viewProductsButton.addEventListener("click", (event) => {
+        viewProductsButton.addEventListener("click", async (event) => {
             event.stopPropagation();
-            console.log("View-Products-Button Clicked!"); 
-        })
+            let productList;
+            try {
+                const response = await fetch("http://localhost:3000/products", { // ✅ Use correct route
+                    method: "GET",
+                    headers: { "Content-Type": "application/json" },
+                });
+
+                
+                if(response.ok)
+                {
+                    const result = await response.json();
+                    productList=result.data;
+                }
+                else{
+                    productList="No Products found";
+                }
+                
+            } catch (error) {
+
+                alert("Error fetching  Product");
+                console.error(error);
+            }
+
+
+            const viewProductsPopup = document.createElement("view-products-component");
+            viewProductsPopup.initialize(productList);
+            viewProductsPopup.style.position = "fixed";
+            viewProductsPopup.style.left = "50%";
+            viewProductsPopup.style.top = "50%";
+            viewProductsPopup.style.transform = "translate(-50%, -50%)";
+            viewProductsPopup.style.height="90%";
+            viewProductsPopup.style.width="90%";
+            document.body.onclick = () => {
+                document.querySelectorAll("view-products-component").forEach((element) => {
+                    element.remove();
+                });
+            };
+
+            document.body.appendChild(viewProductsPopup);
+        });
 
 
         addProductButton.addEventListener("click", (event) => {

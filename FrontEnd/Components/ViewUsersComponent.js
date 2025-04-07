@@ -8,7 +8,7 @@ class ViewUsersComponent extends HTMLElement {
     }
     connectedCallback() {
         this.innerHTML = `
-            <div class="viewUsers-popup-container">
+            <div class="view-popup-container">
 
             </div>
         `;
