@@ -2,7 +2,8 @@
 const mongoose = require("mongoose");
 const Product = require("../Models/ProductSchema.js");
 
-const getAllProducts = async(req,res)=>{
+const getAllProducts = async(req,res)=>
+{
     
     try{
         const products = await Product.find({});
@@ -85,4 +86,4 @@ const updateProduct = async (req,res)=>{
     res.status(500).json({ success: false, message: "Server Error" });
     }   
 }
-module,exports = {getAllProducts,getProductByName,createProduct,deleteProduct,updateProduct};
+module.exports = {getAllProducts,getProductByName,createProduct,deleteProduct,updateProduct};

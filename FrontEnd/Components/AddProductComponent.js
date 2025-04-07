@@ -22,7 +22,7 @@ class AddProductComponent extends HTMLElement
                         <label for="image">Product Image:</label>
                         <input type="file" accept="image/*">
 
-                        <button type="submit" id="submitUser">Add Product</button>
+                        <button type="submit" id="submitProduct">Add Product</button>
                         <button class="close-popup">Close</button>
                     </form>
             </div>
@@ -57,8 +57,8 @@ class AddProductComponent extends HTMLElement
             {
                 // Normal JSON.stringify will not work as we have "file" input.
                 const formData = new FormData();
-                formData,append("name", productName);
-                formData,append("quantity", quantity);
+                formData.append("name", productName);
+                formData.append("quantity", quantity);
                 formData.append("price", price);
 
                 if(imageFile) {
