@@ -120,7 +120,7 @@ button:hover, a > button:hover {
     align-items: center;
 }
 
-.products-container {
+.products-container, .login-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
