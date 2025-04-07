@@ -28,21 +28,43 @@ const getProductByName = async (req, res) => {
 };
 
 const createProduct = async (req,res) => {
-    const product = req.body;
-    if(!product.name || !product.quantity || !product.price)
-    {
-        res.status(400).json({success:false, message:"Please provide all name, quantity and price"});
-    }
-    const newProduct= new Product(product);
-    try{
+    // const product = req.body;
+    // if(!product.name || !product.quantity || !product.price)
+    // {
+    //     res.status(400).json({success:false, message:"Please provide all name, quantity and price"});
+    // }
+    // const newProduct= new Product(product);
+    // try{
+
+    //     await newProduct.save();
+    //     res.status(201).json({success:true,data:newProduct});
+    // }
+    // catch(error)
+    // {
+    //     console.error("Error in creation of product:",error.message);
+    //     res.status(500).json({success:false,message:"Server Error"});
+    // }
+
+    try {
+        const { name, quantity, price } = req.body;
+
+        if (!name || !quantity || !price) {
+            return res.status(400).json({
+                success: false,
+                message: "Please provide all name, quantity and price",
+            });
+        }
+
+        const image = req.file ? req.file.path : null;
+
+        const newProduct = new Product({ name, quantity, price, image });
 
         await newProduct.save();
-        res.status(201).json({success:true,data:newProduct});
-    }
-    catch(error)
-    {
-        console.error("Error in creation of product:",error.message);
-        res.status(500).json({success:false,message:"Server Error"});
+
+        res.status(201).json({ success: true, data: newProduct });
+    } catch (error) {
+        console.error("Error in creation of product:", error.message);
+        res.status(500).json({ success: false, message: "Server Error" });
     }
 };
 
