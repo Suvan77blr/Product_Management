@@ -12,10 +12,9 @@
             <div class="buttonsContainer">
                 <button class="viewProductsButton">View Products</button>
                 <button class="addProductButton">Add Product</button>
-                <button onclick="alert('Dummy Placeholder Button!');">Dummy2</button>
+                <button class="deleteProductButton">Delete Button</button>
             </div>
             <div class="diplayContainer">
-
             </div>
         </div>
 
@@ -24,11 +23,12 @@
     <script type="module">
         import "../Components/AddProductComponent.js";
         import "../Components/ViewProductsComponent.js";
+        import "../Components/DeleteProductComponent.js";
+        
         const productDisplayContainer = document.querySelector(".diplayContainer");
-
         const viewProductsButton = document.querySelector(".viewProductsButton");
         const addProductButton = document.querySelector(".addProductButton");
-
+        const deleteProductButton = document.querySelector(".deleteProductButton");
         viewProductsButton.addEventListener("click", async (event) => {
             event.stopPropagation();
             let productList;
@@ -71,14 +71,10 @@
 
             document.body.appendChild(viewProductsPopup);
         });
-
-
         addProductButton.addEventListener("click", (event) => {
             event.stopPropagation();
-            console.log("Add-Product-Button Clicked!"); 
             
             const addProductPopup = document.createElement("add-product-component");
-
             addProductPopup.style.position = "fixed";
             addProductPopup.style.left = "50%";
             addProductPopup.style.top = "50%";
@@ -89,11 +85,26 @@
                     element.remove();
                 });
             };
-
             document.body.appendChild(addProductPopup);
 
         });
-    
+        deleteProductButton.addEventListener("click", (event) => {
+            event.stopPropagation();
+            
+            const deleteProductPopup = document.createElement("delete-product-component");
+            deleteProductPopup.style.position = "fixed";
+            deleteProductPopup.style.left = "50%";
+            deleteProductPopup.style.top = "50%";
+            deleteProductPopup.style.transform = "translate(-50%, 50%)";
+
+            document.body.onclick = () => {
+                document.querySelectorAll("delete-product-component").forEach((element) => {
+                    element.remove();
+                });
+            };
+            document.body.appendChild(deleteProductPopup);
+
+        });
     </script>
 
 </html>

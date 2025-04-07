@@ -1,4 +1,5 @@
-
+const path = require("path");
+const fs = require("fs");
 const mongoose = require("mongoose");
 const Product = require("../Models/ProductSchema.js");
 
@@ -69,20 +70,36 @@ const createProduct = async (req,res) => {
 };
 
 const deleteProduct = async (req,res)=>{
-    const name= req.body;
-    try
-    {
-        const product = Product.findOneAndDelete({name});
-        if(!product)
-        {
-            return res.status(400).json({success:false,message:"Product not found"});
+    
+    try {
+        const { productName } = req.body;
+        if (!productName) {
+            return res.status(400).json({ success: false, message: "Product name required" });
         }
-        res.status(200).json({success:true,message:"Product Deleted successfully"});
-    }
-    catch(error)
-    {
-        console.error("Error in deleting prodcut:",error.message);
-        res.status(500).json({success:false,message:"Server Error"})
+
+        const deleted = await Product.findOneAndDelete({ name: productName });
+
+        if (!deleted) {
+            return res.status(404).json({ success: false, message: "Product not found" });
+        }
+        if (deleted.image) {
+            const imagePath = path.resolve(deleted.image);  // Get absolute path
+            // OPTIONAL: Ensure file is within uploads directory (safety check)
+            const uploadsDir = path.resolve("uploads");
+            if (imagePath.startsWith(uploadsDir)) {
+                fs.unlink(imagePath, (err) => {
+                    if (err) {
+                        console.warn("Could not delete image file:", err.message);
+                    } else {
+                        console.log("Image file deleted:", imagePath);
+                    }
+                });
+            }
+        }
+        res.status(200).json({ success: true, message: "Product deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting product:", error.message);
+        res.status(500).json({ success: false, message: "Server error" });
     }
 };
 
