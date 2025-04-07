@@ -24,11 +24,13 @@
         import "../Components/AddProductComponent.js";
         import "../Components/ViewProductsComponent.js";
         import "../Components/DeleteProductComponent.js";
+        import "../Components/ListItemComponent.js";
         
         const productDisplayContainer = document.querySelector(".diplayContainer");
         const viewProductsButton = document.querySelector(".viewProductsButton");
         const addProductButton = document.querySelector(".addProductButton");
         const deleteProductButton = document.querySelector(".deleteProductButton");
+        
         viewProductsButton.addEventListener("click", async (event) => {
             event.stopPropagation();
             let productList;
@@ -53,24 +55,30 @@
                 alert("Error fetching  Product");
                 console.error(error);
             }
+            const productsListMenuBar = ["Name", "Quantity", "Unit Price", "Image", "OptionsBtn", "DeleteBtn"];
 
 
-            const viewProductsPopup = document.createElement("view-products-component");
-            viewProductsPopup.initialize(productList);
-            viewProductsPopup.style.position = "fixed";
-            viewProductsPopup.style.left = "50%";
-            viewProductsPopup.style.top = "50%";
-            viewProductsPopup.style.transform = "translate(-50%, -50%)";
-            viewProductsPopup.style.height="90%";
-            viewProductsPopup.style.width="90%";
+            // const viewProductsPopup = document.createElement("view-products-component");
+
+            const viewProductsListPopup = document.createElement("list-item-component");
+            viewProductsListPopup.initialize(productList, productsListMenuBar, "Products List");
+
+            viewProductsListPopup.style.position = "fixed";
+            viewProductsListPopup.style.left = "50%";
+            viewProductsListPopup.style.top = "50%";
+            viewProductsListPopup.style.transform = "translate(-50%, -50%)";
+            viewProductsListPopup.style.height="90%";
+            viewProductsListPopup.style.width="90%";
+            viewProductsListPopup.style.overflow = "auto";
             document.body.onclick = () => {
-                document.querySelectorAll("view-products-component").forEach((element) => {
+                document.querySelectorAll("list-item-component").forEach((element) => {
                     element.remove();
                 });
             };
 
-            document.body.appendChild(viewProductsPopup);
+            document.body.appendChild(viewProductsListPopup);
         });
+        
         addProductButton.addEventListener("click", (event) => {
             event.stopPropagation();
             
