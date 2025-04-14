@@ -17,6 +17,7 @@ body {
     height: 100vh;
     margin: 0;
 }
+
 .container {
     background-color: var(--secondary-bg-color);
     padding: 20px;
@@ -130,6 +131,44 @@ button:hover, a > button:hover {
 a {
     text-decoration: none;
     color: #000000;
+}
+
+.input-container {
+    margin: 20px 0;
+    position: relative;
+}
+
+.input-container label {
+    position: absolute;
+    transform: translateY(-50%);
+    top: 30%;
+    left: 15px;
+    font-size: 16px;
+    pointer-events: none;
+
+    padding: 0px 5px;
+    transition: .5s;
+}
+
+.input-container input {
+    width: 360px;
+    height: 60px;
+    color: #000;
+    font-size: 16px;
+    padding: 0 15px;
+    border: 1.2px solid rgb(220, 223, 223);
+    outline: none;
+    /* background: transparent; */
+    border-radius: 15px;
+}
+
+.input-container input:focus~label,
+.input-container input:valid~label {
+    top: 0px;
+    /* background: var(--secondary-bg-color); */
+    /* color: var(--button-hover-color); */
+    font-size: 14px;
+    
 }
 
 
