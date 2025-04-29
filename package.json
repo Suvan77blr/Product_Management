@@ -4,6 +4,7 @@
   "description": "This a product catalogue mern stack project using mongodb",
   "main": "index.js",
   "scripts": {
+    "start":  "node BackEnd/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon BackEnd/server.js"
   },

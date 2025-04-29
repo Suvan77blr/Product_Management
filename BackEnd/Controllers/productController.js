@@ -52,7 +52,7 @@ const createProduct = async (req,res) => {
         if (!name || !quantity || !price) {
             return res.status(400).json({
                 success: false,
-                message: "Please provide all name, quantity and price",
+                message: "Please provide the details: name, quantity and price",
             });
         }
 

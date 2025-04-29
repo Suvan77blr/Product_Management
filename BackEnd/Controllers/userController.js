@@ -1,6 +1,7 @@
 
 const mongoose = require("mongoose");
 const User= require("../Models/UserSchema.js");
+const bcrypt = require("bcryptjs");
 
 const getUsers = async (req,res) =>{
     try{
@@ -20,9 +21,24 @@ const createUser= async (req,res)=>{
     {
         res.status(400).json({success:false, message:"Please provide all the details"});
     }
-    const newUser= new User(user);
+    const existingUser = await User.findOne({ email:user.email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User already exists with this email' });
+    }
+    //Actual hashing parts-using bcrypt
+    const salt = await bcrypt.genSalt(10); // 10 is good balance between speed and security
+    const hashedPassword = await bcrypt.hash(user.password, salt);
+
     try{
 
+        const newUser= new User(
+            {
+                username:user.username,
+                password:hashedPassword,
+                email:user.email,
+                role:user.role
+            }
+        );
         await newUser.save();
         res.status(201).json({success:true,data:newUser});
     }

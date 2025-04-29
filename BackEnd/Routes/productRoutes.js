@@ -22,8 +22,6 @@ productRouter.get("/",getAllProducts);
 productRouter.get("/byName",getProductByName);
 productRouter.delete("/byDetails",deleteProduct);
 productRouter.put("/byDetails",updateProduct);
-
-
-
 productRouter.post("/",upload.single("image"),createProduct);
+
 module.exports = productRouter;
