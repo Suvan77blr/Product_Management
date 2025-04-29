@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const { connectDB } = require("./Database/ConnectorDB.js");
 const userRouter = require("./Routes/userRoutes.js");
 const productRouter = require("./Routes/productRoutes.js");
-
+const loginRouter = require("./Routes/loginRoutes.js");
 
 const app = express();
 const PORT = 3000;
@@ -29,7 +29,7 @@ app.get("/manage-users",(req,res)=>{
 // Custom routes definition.
 app.use("/users", userRouter);
 app.use("/products", productRouter);
-
+app.use("/",loginRouter);
 
 app.listen(PORT, () => {
     console.log(`✅ Server running on http://localhost:${PORT}`);
