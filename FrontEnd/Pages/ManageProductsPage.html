@@ -55,13 +55,36 @@
                 alert("Error fetching  Product");
                 console.error(error);
             }
-            const productsListMenuBar = ["Name", "Quantity", "Unit Price", "Image", "OptionsBtn", "DeleteBtn"];
 
+            // For Local Testing.
+            // productList = [
+            //     {name: "Product-A", quantity: 10, unit_price: 50},
+            //     {name: "Product-B", quantity: 20, unit_price: 70},
+            //     {name: "Product-C", quantity: 30, unit_price: 30},
+            //     {name: "Product-D", quantity: 10, unit_price: 40},
+            //     {name: "Product-E", quantity: 50, unit_price: 35},
+            //     {name: "Product-F", quantity: 25, unit_price: 50},
+            //     {name: "Product-G", quantity: 10, unit_price: 50},
+            //     {name: "Product-H", quantity: 60, unit_price: 60},
+            //     {name: "Product-I", quantity: 37, unit_price: 80},
+            //     {name: "Product-J", quantity: 25, unit_price: 50},
+            //     {name: "Product-K", quantity: 10, unit_price: 90}
+            // ];
+            const productsListMenuBar = ["Name", "Quantity", "Unit Price", "OptionsBtn", "DeleteBtn"];
 
+            // For handling the mapping in the list-item-component.
+            const headerToKeyMap = {
+                "Name": "name",
+                "Quantity": "quantity",
+                "Unit Price": "price",
+            };
+
+            const productsServerRoute = "/products";
+            const productsListTitle = "Products List";
             // const viewProductsPopup = document.createElement("view-products-component");
 
             const viewProductsListPopup = document.createElement("list-item-component");
-            viewProductsListPopup.initialize(productList, productsListMenuBar, "Products List");
+            viewProductsListPopup.initialize(productList, productsListMenuBar, productsListTitle, headerToKeyMap, productsServerRoute);
 
             viewProductsListPopup.style.position = "fixed";
             viewProductsListPopup.style.left = "50%";

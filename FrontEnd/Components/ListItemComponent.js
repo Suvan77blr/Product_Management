@@ -1,3 +1,4 @@
+import DeleteButtonComponent from "./DeleteButtonComponent.js";
 
 class ListItemComponent extends HTMLElement
 {
@@ -6,11 +7,13 @@ class ListItemComponent extends HTMLElement
         super();
     }
 
-    initialize(objectItemsArray, listHeaderBar, listHeading)
+    initialize(objectItemsArray, listHeaderBar, listTitle, headerToKeyMap, associatedServerRoute)
     {
         this.objectItemsArray = objectItemsArray;
         this.listHeaderBar = listHeaderBar;
-        this.listHeading = listHeading;
+        this.listTitle = listTitle;
+        this.headerToKeyMap = headerToKeyMap;
+        this.associatedServerRoute = associatedServerRoute;
     }
 
     connectedCallback()
@@ -20,7 +23,7 @@ class ListItemComponent extends HTMLElement
             <div class="product-list-outer-container container">
                 <div class="list-header">
                     <div class="first-line">
-                        <h2>${this.listHeading}
+                        <h2>${this.listTitle}
                             <button class="list-close-button">x</button>
                         </h2>
                     </div>
@@ -30,6 +33,13 @@ class ListItemComponent extends HTMLElement
                 </div>
             </div>
         `;
+
+        // Fallback condition for no-items ... yet to be tested.
+        if (!Array.isArray(this.objectItemsArray) || this.objectItemsArray.length === 0) {
+            const productListContainer = this.querySelector(".product-list-container");
+            productListContainer.innerHTML = "<p>No products available.</p>";
+            return;
+        }
 
         const productListOuterContainer = this.querySelector(".product-list-outer-container");
         productListOuterContainer.style.display = "flex";
@@ -72,25 +82,59 @@ class ListItemComponent extends HTMLElement
 
         console.log(this.objectItemsArray);
         
-        for(var idx in this.objectItemsArray) 
+        for(var product of this.objectItemsArray) 
         {
             var productDiv = document.createElement("div");
             productDiv.className = "productDiv";
             productDiv.style.margin = "10px";
 
-            var currObj = this.objectItemsArray[idx];
-
-            for(var key in currObj) 
+            // Iterating over header-strings for the keys of each row.
+            for (let headerName of this.listHeaderBar) 
             {
                 const valueSpan = document.createElement("span");
                 valueSpan.className = "valueSpan";
-                valueSpan.innerHTML = currObj[key];
-                productDiv.appendChild(valueSpan);
+                if (this.headerToKeyMap[headerName]) 
+                {
+                    // Rendering the value from product object.
+                    const key = this.headerToKeyMap[headerName];
+                    valueSpan.textContent = product[key] !== undefined ? product[key] : "";
+                } 
+                else if (headerName === "DeleteBtn") 
+                {
+                    // Rendering the delete-button-component.
+                    const deleteBtn = document.createElement("delete-button-component");
+                    deleteBtn.initialize(product.name, this.associatedServerRoute);
+                    valueSpan.appendChild(deleteBtn);
+                }
+                else {
+                    // Temporary setting.
+                    valueSpan.textContent = `${headerName}?`;
+                }
+                productDiv.appendChild(valueSpan);  // Horizontal List Item is created.
             }
-
             productListContainer.appendChild(productDiv);
             
         }
+
+        // Event Listener to handle the removal of deleted item from the local objectItemsArray.
+        this.addEventListener("item-deleted", (e) => 
+        {
+            const nameToDelete = e.detail.name;
+
+            // ✅ Remove from local array
+            const index = this.objectItemsArray.findIndex(p => p.name === nameToDelete);
+            if (index !== -1) {
+                this.objectItemsArray.splice(index, 1);
+            }
+
+            // ✅ Remove from DOM
+            const productDivs = this.querySelectorAll(".productDiv");
+            productDivs.forEach(div => {
+                if (div.textContent.includes(nameToDelete)) {
+                    div.remove();
+                }
+            });
+        });
 
         this.querySelectorAll(".productDiv").forEach( (productDiv) => {
             productDiv.style.border = "solid 2px black";
