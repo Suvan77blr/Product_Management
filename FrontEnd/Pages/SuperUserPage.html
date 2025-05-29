@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Super User - Product Management</title>
     <link rel="stylesheet" href="../Styles/SuperUserStyles.css">
+
+    <!-- Importing Components -->
+    <script type="module" src="../Components/PageFooterComponent.js"></script>
 </head>
 <body>
     <div class="container">
@@ -15,7 +18,6 @@
             <button onclick="viewReports()">View Reports</button>
         </div>
     </div>
-
-
+    <page-footer-component buttons = '["dashboard", "logout"]'></page-footer-component>
 </body>
 </html>

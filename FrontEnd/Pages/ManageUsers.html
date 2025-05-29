@@ -5,10 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Users</title>
     <link rel="stylesheet" href="../Styles/styles.css">
+
+    <!-- Importing Components -->
+    <script type="module" src="../Components/PageFooterComponent.js"></script>
 </head>
 <body>
 
     <div class="container">
+        <h2>People Catalog</h2>
         <div class="actions">
             <button id="viewUsersButton" >View Users</button>
             <button id="openAddUserButton">Add User</button>
@@ -16,8 +20,8 @@
         </div>
     </div>
     
-    
     <!-- We will need to add a table for displaying existing user and for altering the users. -->
+    <page-footer-component buttons = '["dashboard", "back", "logout"]'></page-footer-component>
           
 </body>
 
@@ -25,6 +29,7 @@
     import "../Components/AddUserComponent.js";
     import "../Components/ViewUsersComponent.js";
     import "../Components/DeleteUserComponent.js";
+
     document.getElementById("openAddUserButton").addEventListener("click", (event) => {
         event.stopPropagation();
         const popup = document.createElement("add-user-component");
