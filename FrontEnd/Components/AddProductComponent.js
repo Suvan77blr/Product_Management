@@ -23,14 +23,15 @@ class AddProductComponent extends HTMLElement
                         <input type="file" id="image" accept="image/*">
 
                         <button type="submit" id="submitProduct">Add Product</button>
-                        <button class="close-popup">Close</button>
+                        <button type="button" class="close-popup">Close</button>
                     </form>
             </div>
         `;
+        const productForm = this.querySelector("#addProductForm");
 
         const closeButton = this.querySelector(".close-popup");
-
         closeButton.addEventListener("click", () => {
+            productForm.reset();
             this.remove();
         });
 
@@ -39,9 +40,7 @@ class AddProductComponent extends HTMLElement
             event.stopPropagation();
         });
 
-        // Form Submission Logic.
-        const productForm = this.querySelector("#addProductForm");
-        
+        // Form Submission Logic.        
         productForm.addEventListener("submit", async (event) => {
             event.preventDefault();
 
@@ -76,17 +75,27 @@ class AddProductComponent extends HTMLElement
 
                     // const result = await response.json();
                     // alert(result.message || "Product added!");
-                    const rawResponse = await response.text();
-                    console.log("Raw Response from server:", rawResponse);
+                    const result = await response.json();
 
+                    // Can be commented after testing.
+                    console.log("Raw Response from server:", response);
+                    console.log("Result from server:", result);
 
-                    if(rawResponse.ok) {
+                    // success of both HTTP & Application logic.
+                    if(response.ok && result.success) {
+                        let displayMsg = `Successfully added ${quantity} units of ${productName} (each: ${price}/-) `
+                        alert(displayMsg);
+
                         productForm.reset();
                         this.remove();
                     }
+                    else {
+                        console.error("Error from server:", result);
+                    }
                 }
                 catch(error) {
-                    console.error("Error while adding the product:",error.message);
+                    alert("Error adding product");
+                    console.error("Error adding the product: ",error.message);
                 }
             } else {
                 alert("Please fill in all fields");

@@ -15,6 +15,8 @@
 
     --primary-button-color: #5aa4e1;
     --button-hover-color: #002fff;
+
+    --popup-container-color: #f2e2da;
 }
 
 
@@ -78,7 +80,7 @@ button:hover {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    background: #FFF7F3;
+    background: var(--popup-container-color);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);

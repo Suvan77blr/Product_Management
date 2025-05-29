@@ -23,13 +23,15 @@ class AddUserComponent extends HTMLElement {
                         </select>
 
                         <button type="submit" id="submitUser">Add User</button>
-                        <button class="close-popup">Close</button>
+                        <button type="button" class="close-popup">Close</button>
                     </form>
             </div>
         `;
+        const userForm = this.querySelector("#addUserForm");
 
-        // Close popup when "Close" is clicked
-        this.querySelector(".close-popup").addEventListener("click", () => {
+        const closeButton = this.querySelector(".close-popup");
+        closeButton.addEventListener("click", () => {
+            userForm.reset();
             this.remove();
         });
 
@@ -39,8 +41,7 @@ class AddUserComponent extends HTMLElement {
         });
 
         // Handle form submission
-        const form = this.querySelector("#addUserForm");
-        form.addEventListener("submit", async (event) => {
+        userForm.addEventListener("submit", async (event) => {
             event.preventDefault();
 
             const username = this.querySelector("#username").value.trim();
@@ -59,15 +60,19 @@ class AddUserComponent extends HTMLElement {
                     });
 
                     const result = await response.json();
+                    // Can be commented after testing.
+                    console.log("Raw Response from server:", response);
+                    console.log("Result from server:", result);
+
                     alert(result.message || "User added!");
 
-                    if (response.ok) {
-                        form.reset();       // ✅ Clear form
+                    if (response.ok && result.success) {
+                        userForm.reset();       // ✅ Clear form
                         this.remove();      // ✅ Close popup
                     }
                 } catch (error) {
                     alert("Error adding user");
-                    console.error(error);
+                    console.error("Error adding the user: ", error);
                 }
             } else {
                 alert("Please fill in all fields.");
