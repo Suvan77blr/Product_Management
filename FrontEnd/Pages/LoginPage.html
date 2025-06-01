@@ -6,7 +6,9 @@
     <title>Login - Product Management</title>
     <link rel="stylesheet" href="/Styles/styles.css">
 </head>
+
 <body>
+    <p>Test</p>
     <div class="login-container container">
         <h2>Login</h2>
         <form id="userLoginForm">
@@ -29,25 +31,34 @@
         <a href="/Pages/SuperUserPage.html"><button class="super-user-popup-button">SuperUser</button> </a>
             <!-- <button class="super-user-popup-button">Super User</button>  -->
     </div>
-    <!-- <script src="script.js"></script> -->
-    <script >
-        document.getElementById('userLoginForm').addEventListener('submit', async function(event) {
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('userLoginForm');
+    if (!form) {
+        console.error("Form not found!");
+        return;
+    }
+
+    form.addEventListener('submit', async function (event) {
         event.preventDefault();
 
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
+        console.log("Enter the login form");
 
         try {
             const response = await fetch('http://localhost:3000/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password }),
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
             });
 
             const values = await response.json();
-            console.log("data received:",values);
+            
+
             if (values.success) {
-                const  token=values.token;
+                console.log("data received:", values);
+                const token = values.token;
                 const user = values.user;
                 localStorage.setItem('authToken', token);
 
@@ -57,44 +68,16 @@
                     window.location.href = '/Pages/NormalUserPage.html';
                 }
             } else {
-            document.getElementById('errorMessage').textContent = values.message;
+                document.getElementById('errorMessage').textContent = values.message;
             }
         } catch (error) {
             console.error('Login error:', error);
             document.getElementById('errorMessage').textContent = 'Something went wrong. Please try again.';
         }
-        });
-
-    </script>
-</body>
-
-<!-- Component Popup Model -->
-<!-- <script type="module">
-    import SuperUserComponent from "../Components/SuperUserComponent.js";
-
-    const superUserPopupButton = document.querySelector(".super-user-popup-button");
+    });
+});
+</script>
     
-    superUserPopupButton.onclick = ()=>
-    {
-
-        event.stopPropagation();
-        const popup = document.createElement("super-user-component");
-        popup.style.position = "fixed";
-        popup.style.left = "50%";
-        popup.style.top = "50%";
-        popup.style.transform = "translate(-50%, -50%)";
-        // popup.onblur = ()=>{ console.log("Focus lost")}
-        document.body.onclick = ()=>
-        {        
-            document.querySelectorAll("super-user-component").forEach((element)=>
-            {
-                element.remove();
-            });
-        }
-
-        document.body.appendChild(popup);
-    }   
-</script> -->
-
+</body>
 </html> 
 
