@@ -16,6 +16,7 @@ class PageFooterComponent extends HTMLElement
     }
 
     userLogout() {
+        localStorage.removeItem("token");
         window.location.href = "../Pages/LoginPage.html";
     }
 

@@ -26,5 +26,9 @@ jobs:
       - name: 📦 Install dependencies
         run: npm install
 
+      - name: 🛠️ Create .env.test file
+        run: |
+          echo "MONGO_URL=${{ secrets.MONGOTESTURL }}" > .env.test
+
       - name: ✅ Run tests
         run: npm test
