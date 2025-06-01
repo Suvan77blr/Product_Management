@@ -5,7 +5,6 @@ const Product = require("../Models/ProductSchema.js");
 
 const getAllProducts = async(req,res)=>
 {
-    
     try{
         const products = await Product.find({});
         res.status(200).json({success:true,data:products});
@@ -16,6 +15,7 @@ const getAllProducts = async(req,res)=>
         res.status(500).json({success:false,message:"Server Error"});
     }
 };
+
 const getProductByName = async (req, res) => {
     try {
         const name = req.body;
@@ -29,36 +29,27 @@ const getProductByName = async (req, res) => {
 };
 
 const createProduct = async (req,res) => {
-    // const product = req.body;
-    // if(!product.name || !product.quantity || !product.price)
-    // {
-    //     res.status(400).json({success:false, message:"Please provide all name, quantity and price"});
-    // }
-    // const newProduct= new Product(product);
-    // try{
-
-    //     await newProduct.save();
-    //     res.status(201).json({success:true,data:newProduct});
-    // }
-    // catch(error)
-    // {
-    //     console.error("Error in creation of product:",error.message);
-    //     res.status(500).json({success:false,message:"Server Error"});
-    // }
-
     try {
-        const { name, quantity, price } = req.body;
+        const { productId, name, quantity, price } = req.body;
 
-        if (!name || !quantity || !price) {
+        if (!productId || !name || !quantity || !price) {
             return res.status(400).json({
                 success: false,
                 message: "Please provide the details: name, quantity and price",
             });
         }
 
+        const existingProduct = await Product.findOne({
+            productId: productId
+        });
+
+        if(existingProduct) {
+            return res.status(400).json({ message: 'Product already exists!'});
+        }
+
         const image = req.file ? "uploads/" + req.file.filename : null;
 
-        const newProduct = new Product({ name, quantity, price, image });
+        const newProduct = new Product({ productId, name, quantity, price, image });
 
         await newProduct.save();
 
@@ -69,15 +60,15 @@ const createProduct = async (req,res) => {
     }
 };
 
-const deleteProduct = async (req,res)=>{
+const deleteProduct = async (req, res)=>{
     
     try {
-        const { productName } = req.body;
-        if (!productName) {
-            return res.status(400).json({ success: false, message: "Product name required" });
+        const { productId } = req.body;
+        if (!productId) {
+            return res.status(400).json({ success: false, message: "Product ID required" });
         }
 
-        const deleted = await Product.findOneAndDelete({ name: productName });
+        const deleted = await Product.findOneAndDelete({ productId: productId });
 
         if (!deleted) {
             return res.status(404).json({ success: false, message: "Product not found" });

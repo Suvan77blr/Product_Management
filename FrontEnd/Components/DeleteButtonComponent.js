@@ -7,9 +7,9 @@ class DeleteButtonComponent extends HTMLElement
         super();
     }
 
-    initialize(listItemName, serverRoute)
+    initialize(listItemId, serverRoute)
     {
-        this.listItemName = listItemName;
+        this.listItemId = listItemId;
         this.serverRoute = serverRoute;
     }
 
@@ -25,14 +25,14 @@ class DeleteButtonComponent extends HTMLElement
         {
             event.preventDefault();
 
-            alert(`${this.listItemName} is about to be deleted!`);
+            alert(`${this.listItemId} is about to be deleted!`);
         
             try {
                 const response = await fetch(`http://localhost:3000${this.serverRoute}/byDetails`, {
                     method: "DELETE",
                     headers:{"Content-Type":"application/json"},
                     // body: JSON.stringify({productName})
-                    body: JSON.stringify({productName: this.listItemName})
+                    body: JSON.stringify({productId: this.listItemId})
                 });
 
                 const result = await response.json();
@@ -41,7 +41,7 @@ class DeleteButtonComponent extends HTMLElement
                 this.dispatchEvent(new CustomEvent("item-deleted", {
                     bubbles: true,
                     composed: true,
-                    detail: { name: this.listItemName }
+                    detail: { productId: this.listItemId }
                 }));
 
             }
