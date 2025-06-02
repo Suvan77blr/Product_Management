@@ -1,56 +1,63 @@
-name: product-management
+version: '3.8'
+name: stratify
 
 services:
   backend:
-    build:
-      context: .  # Root directory (where Dockerfile for backend is located)
-      dockerfile: Dockerfile  # Backend Dockerfile is in the root directory
+    env_file: .env.docker
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: stratify-backend
     ports:
-      - "5000:5000"
+      - "3000:3000"
     depends_on:
       - mongo
-    environment:
-      - MONGO_URL=mongodb://mongo:27017/product_management
     networks:
       - app-network
+    restart: unless-stopped           # Recommended by big-bro.
+    working_dir: /app     # NEW.
 
   frontend:
     build:
-      context: .  # Frontend Dockerfile location
-      dockerfile: FrontEnd/Dockerfile
-    ports:
-      - "8081:80"  # Expose port 80
+      context: ./FrontEnd  # project-root
+      dockerfile: Dockerfile
+    container_name: stratify-frontend
     depends_on:
       - backend
-    # volumes:
-    #   - ./FrontEnd:/usr/share/nginx/html/FrontEnd  # Mount the FrontEnd directory for hot reload
-    #   - ./nginx.conf:/etc/nginx/nginx.conf:ro  # Mount nginx config for auto-reload
-    networks:
-      - app-network
-  nginx:  # Add this section for Nginx
-    image: nginx:latest
-    container_name: nginx-container
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro  # Ensure nginx.conf is correctly mapped
-      - ./FrontEnd:/usr/share/nginx/html/FrontEnd  # Map your frontend directory to Nginx
     ports:
-      - "8080:80"  # Expose port 80 for nginx
-    depends_on:
-      - frontend
+      - "8080:80"  # This is the only port you need exposed for frontend access
     networks:
       - app-network
+    restart: unless-stopped           # Recommended by big-bro.
+
+  # Temporarily Commented as we don't need this right now.  
+  # nginx:
+  #   image: nginx:latest
+  #   container_name: stratify-nginx
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
+  #     - ./FrontEnd:/usr/share/nginx/html:ro
+  #   ports:
+  #     - "8080:80"  # Main exposed port
+  #   depends_on:
+  #     - frontend
+  #   networks:
+  #     - app-network
+  #   restart: unless-stopped           # Recommended by big-bro.
 
   mongo:
     image: mongo
+    container_name: stratify-db
     ports:
       - "27017:27017"
     volumes:
-      - mongo-data:/data/db
+      - mongo_data:/data/db
     networks:
       - app-network
+    restart: unless-stopped           # Recommended by big-bro.
 
 volumes:
-  mongo-data:
+  mongo_data:
 
 networks:
   app-network:
