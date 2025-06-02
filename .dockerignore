@@ -1,0 +1,10 @@
+node_modules
+FrontEnd
+.dockerignore
+Dockerfile
+docker-compose.yml
+.git
+.gitignore
+README.md
+Show-ProjectTree.ps1
+*.log

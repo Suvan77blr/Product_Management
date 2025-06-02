@@ -4,7 +4,7 @@ class ViewUsersComponent extends HTMLElement {
     }
     initialize(usersList)
     {   
-        this.usersList=usersList;
+        this.usersList = usersList;
     }
     connectedCallback() {
         this.innerHTML = `
@@ -17,10 +17,18 @@ class ViewUsersComponent extends HTMLElement {
         // popupContainer.innerHTML= this.usersList;
         if (Array.isArray(this.usersList)) {
             popupContainer.innerHTML = `
+                <div class="list-header">
+                    <div class="first-line">
+                        <h2>Users List
+                            <button class="list-close-button">x</button>
+                        </h2>
+                    </div>
+                </div>
                 <table>
-                    <tr><th>Name</th><th>Email</th><th>Role</th></tr>
+                    <tr><th>User ID</th><th>Name</th><th>Email</th><th>Role</th></tr>
                     ${this.usersList.map(user => `
                         <tr>
+                            <td>${user.userId}</td>
                             <td>${user.username}</td>
                             <td>${user.email}</td>
                             <td>${user.role}</td>
@@ -37,6 +45,11 @@ class ViewUsersComponent extends HTMLElement {
         popupContainer.addEventListener("click", (event) => {
             event.stopPropagation();
         });
+
+        const listCloseButton = this.querySelector(".list-close-button");
+        listCloseButton.onclick = () => {
+            this.remove();
+        };
 
     }
 }

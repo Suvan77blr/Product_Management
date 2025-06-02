@@ -7,6 +7,9 @@ class AddUserComponent extends HTMLElement {
             <div class="popup-container">
                     <h2>Add New User</h2>
                     <form id="addUserForm">
+                        <label for="userId">User ID:</label>
+                        <input type="text" id="userId" placeholder="Enter UserId" required>
+
                         <label for="username">Username:</label>
                         <input type="text" id="username" placeholder="Enter username" required>
 
@@ -44,13 +47,14 @@ class AddUserComponent extends HTMLElement {
         userForm.addEventListener("submit", async (event) => {
             event.preventDefault();
 
+            const userId = this.querySelector("#userId").value.trim();
             const username = this.querySelector("#username").value.trim();
             const password = this.querySelector("#password").value;
             const email = this.querySelector("#email").value.trim();
             const role = this.querySelector("#role").value;
 
-            if (username && password && email) {
-                const userData = { username, password, email, role };
+            if (userId && username && password && email) {
+                const userData = { userId, username, password, email, role };
 
                 try {
                     const response = await fetch("http://localhost:3000/users", { // ✅ Use correct route

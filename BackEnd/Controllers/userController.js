@@ -15,46 +15,51 @@ const getUsers = async (req,res) =>{
     }
 };
 
-const createUser= async (req,res)=>{
-    const user= req.body;
-    if(!user.username || !user.password || !user.email || !user.role)
+const createUser= async (req, res) => {
+    const userData = req.body;
+    if(!userData.userId || !userData.username || !userData.password || !userData.email || !userData.role)
     {
         res.status(400).json({success:false, message:"Please provide all the details"});
     }
-    const existingUser = await User.findOne({ email:user.email });
+    
+    // Checking uniqueness of both UserId & email.
+    const existingUser = await User.findOne({
+        $or: [{ userId: userData.userId }, { email: userData.email }]
+    });
+
     if (existingUser) {
-      return res.status(400).json({ message: 'User already exists with this email' });
+      return res.status(400).json({ message: 'User already exists!' });
     }
+
     //Actual hashing parts-using bcrypt
     const salt = await bcrypt.genSalt(10); // 10 is good balance between speed and security
-    const hashedPassword = await bcrypt.hash(user.password, salt);
+    const hashedPassword = await bcrypt.hash(userData.password, salt);
 
     try{
-
         const newUser= new User(
             {
-                username:user.username,
-                password:hashedPassword,
-                email:user.email,
-                role:user.role
+                userId: userData.userId,
+                username: userData.username,
+                password: hashedPassword,
+                email: userData.email,
+                role: userData.role
             }
         );
         await newUser.save();
-        res.status(201).json({success:true,data:newUser});
+        res.status(201).json({success: true, data: newUser});
     }
     catch(error)
     {
-        console.error("Error in creation of user:",error.message);
-        res.status(500).json({success:false,message:"Server Error"});
+        console.error("Error in creation of user: ",error.message);
+        res.status(500).json({success: false, message: "Server Error"});
     }
-
 };
 
  const deleteUser =async (req,res)=>{
-    const {username,email}=req.body;  //we assume we will be getting username and email and build the endpoint accordingly
+    const {userId,email}=req.body;  //we assume we will be getting userId and email and build the endpoint accordingly
 
     try{
-        const user =await User.findOneAndDelete({username,email});
+        const user =await User.findOneAndDelete({userId,email});
         if(!user)
         {
             return res.status(400).json({success:false,message:"User not found"});

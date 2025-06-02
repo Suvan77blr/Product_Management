@@ -8,13 +8,15 @@ class DeleteProductComponent extends HTMLElement
     {
         this.innerHTML = `
             <div class="popup-container">
-                    <h2>Delete the  Product</h2>
+                    <h2>Delete Product
+                        <button class="close-popup">x</button>
+                    </h2>
                     <form id="deleteProductForm">
-                        <label for="productName">Product Name:</label>
-                        <input type="text" id="productName" placeholder="Enter product name" required>
+                        <label for="productId">Product ID:</label>
+                        <input type="text" id="productId" placeholder="Enter Product ID" required>
 
                         <button type="submit" id="deleteProduct">Delete Product</button>
-                        <button class="close-popup">Close</button>
+                        <button type="button" class="close-popup">Close</button>
                     </form>
             </div>
         `;
@@ -35,17 +37,15 @@ class DeleteProductComponent extends HTMLElement
         productForm.addEventListener("submit", async (event) => {
             event.preventDefault();
 
-            const productName = this.querySelector("#productName").value.trim();
+            const productId = this.querySelector("#productId").value.trim();
 
-
-            if(productName)
+            if(productId)
             {
-                
                 try {
                     const response = await fetch("http://localhost:3000/products/byDetails", {
                             method: "DELETE",
                             headers:{"Content-Type":"application/json"},
-                            body: JSON.stringify({productName})
+                            body: JSON.stringify({productId})
                     });
 
                     const result = await response.json();

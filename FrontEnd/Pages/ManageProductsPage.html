@@ -15,10 +15,9 @@
             <div class="buttonsContainer">
                 <button class="viewProductsButton">View Products</button>
                 <button class="addProductButton">Add Product</button>
-                <button class="deleteProductButton">Delete Button</button>
+                <button class="deleteProductButton">Delete Product</button>
             </div>
-            <div class="diplayContainer">
-            </div>
+            <div class="diplayContainer"></div>
         </div>
         <page-footer-component buttons = '["dashboard", "back", "logout"]'></page-footer-component>
     </body>
@@ -73,10 +72,11 @@
             //     {name: "Product-J", quantity: 25, unit_price: 50},
             //     {name: "Product-K", quantity: 10, unit_price: 90}
             // ];
-            const productsListMenuBar = ["Name", "Quantity", "Unit Price", "OptionsBtn", "DeleteBtn"];
+            const productsListMenuBar = ["ID", "Name", "Quantity", "Unit Price", "OptionsBtn", "DeleteBtn"];
 
             // For handling the mapping in the list-item-component.
             const headerToKeyMap = {
+                "ID": "productId",
                 "Name": "name",
                 "Quantity": "quantity",
                 "Unit Price": "price",
