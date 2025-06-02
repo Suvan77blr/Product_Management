@@ -1,12 +1,20 @@
 const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
+const cors = require("cors");
 const { connectDB } = require("./Database/ConnectorDB.js");
 const userRouter = require("./Routes/userRoutes.js");
 const productRouter = require("./Routes/productRoutes.js");
 const loginRouter = require("./Routes/loginRoutes.js");
 
 const app = express();
+// To handle docker error.
+app.use(cors({
+  origin: '*', // You can later restrict to specific domains
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
+
 const PORT = 3000;
 
 connectDB();

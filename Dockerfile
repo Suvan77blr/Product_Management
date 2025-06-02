@@ -1,20 +1,21 @@
-# Use Node.js base image
-FROM node:20
+# With server.js as the entry point:
 
-# Set working directory for the backend
-WORKDIR /usr/src/app
+# Base image.
+FROM node:20-alpine
 
-# Copy package.json and package-lock.json (assuming they are in the root folder)
+# Creating app directory.
+WORKDIR /app
+
+# Installing the dependencies.
 COPY package*.json ./
+RUN npm install --production
 
-# Install dependencies
-RUN npm install
+# Copying the app source
+COPY . .
 
-# Copy the backend code from the BackEnd folder to the working directory
-COPY ./BackEnd /usr/src/app/BackEnd
+# Exposing the backend port
+EXPOSE 3000
 
-# Expose the backend port (5000)
-EXPOSE 5000
-
-# Start the backend server
-CMD ["npm", "start"]
+# Cmd to Start the Server.
+# CMD [ "npm", "start" ]
+CMD sh -c "node BackEnd/Database/seed.js && npm start"

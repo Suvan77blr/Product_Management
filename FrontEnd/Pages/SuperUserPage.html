@@ -8,6 +8,28 @@
 
     <!-- Importing Components -->
     <script type="module" src="../Components/PageFooterComponent.js"></script>
+    <script>
+        const token = localStorage.getItem("authToken");
+        if (!token) {
+            // If no token, redirect to login
+            window.location.href = "../Pages/LoginPage.html";
+        }
+
+        // Prevent caching: don't allow back navigation after logout
+        window.onload = function () {
+            window.history.pushState(null, "", window.location.href);
+            window.onpopstate = function () {
+            window.history.go(1);
+            };
+        };
+
+        let viewReports = function() {
+            alert("Functionality under development...");
+        }
+
+        </script>
+    
+
 </head>
 <body>
     <div class="container">
