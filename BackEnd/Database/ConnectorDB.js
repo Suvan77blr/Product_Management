@@ -8,19 +8,16 @@ if (process.env.NODE_ENV === "test") {
     dotenv.config();
 }
 
-const connectDB = async() => {
-    const mongoURI = process.env.MONGO_URL || "mongodb://localhost:27017/stratify";
-
-    try{
-        const conn = await mongoose.connect(mongoURI);
-        // const conn = await mongoose.connect(mongoURI);
-        console.log(`MongoDb Connected:${conn.connection.host}`);
+const connectDB = async () => {
+   const mongoURL = process.env.MONGO_URL || "mongodb://localhost:27017/stratify";
+    try {
+        const conn = await mongoose.connect(mongoURL, {});
+        console.log(`MongoDB Connected: ${conn.connection.host}`);
+        return conn;
+    } catch (error) {
+        console.error('Database connection error:', error);
+        throw error;
     }
-    catch(error)
-    {
-        console.error(error);
-        process.exit(1);
-    }
-}
+};
 
 module.exports = { connectDB };

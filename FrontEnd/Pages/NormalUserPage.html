@@ -3,9 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Normal User - Product Management</title>
+    <link rel="stylesheet" href="../Styles/NormalUserStyles.css">
 </head>
 <body>
-    <p>Here is a niraml usage</p>
+    <div class="container">
+        <div class="profile-section">
+            <button onclick="viewProfile()">Profile</button>
+            <button onclick="logout()">Logout</button>
+        </div>
+
+        <div class="nav-menu">
+            <a href="#" class="active">Dashboard</a>
+            <a href="./MyProducts.html">My Products</a>
+            <a href="./MyTasks.html">Tasks</a>
+            <a href="./Messages.html">Messages</a>
+        </div>
+
+        <h2>Welcome to Your Dashboard</h2>
+        
+        <div class="dashboard-grid">
+            <div class="card">
+                <h3>Active Products</h3>
+                <p>12</p>
+            </div>
+            <div class="card">
+                <h3>Pending Tasks</h3>
+                <p>5</p>
+            </div>
+            <div class="card">
+                <h3>New Messages</h3>
+                <p>3</p>
+            </div>
+            <div class="card">
+                <h3>Progress</h3>
+                <p>75%</p>
+            </div>
+        </div>
+
+        <h3>Recent Activities</h3>
+        <div class="activities">
+            <div class="activity-item">
+                <div class="activity-header">
+                    <span class="activity-title">Product Update: Mobile App v2.0</span>
+                    <span class="activity-date">3 days ago</span>
+                </div>
+                <p>New features implemented and ready for testing</p>
+            </div>
+            <div class="activity-item">
+                <div class="activity-header">
+                    <span class="activity-title">Task Completed: User Research</span>
+                    <span class="activity-date">5 days ago</span>
+                </div>
+                <p>Completed user interviews and compiled findings</p>
+            </div>
+            <div class="activity-item">
+                <div class="activity-header">
+                    <span class="activity-title">New Project Assigned: E-commerce Platform</span>
+                    <span class="activity-date">1 week ago</span>
+                </div>
+                <p>You have been assigned as a team member</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function viewProfile() {
+            window.location.href = './Profile.html';
+        }
+
+        function logout() {
+            // Add logout logic here
+            window.location.href = './Login.html';
+        }
+    </script>
 </body>
 </html>
