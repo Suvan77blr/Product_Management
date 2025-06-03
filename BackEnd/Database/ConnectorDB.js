@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === "test") {
 const connectDB = async () => {
    const mongoURL = process.env.MONGO_URL || "mongodb://localhost:27017/stratify";
     try {
-        const conn = await mongoose.connect(mongoURL, {});
+        const conn = await mongoose.connect(mongoURL);
         console.log(`MongoDB Connected: ${conn.connection.host}`);
         return conn;
     } catch (error) {
