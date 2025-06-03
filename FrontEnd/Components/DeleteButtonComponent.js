@@ -28,7 +28,7 @@ class DeleteButtonComponent extends HTMLElement
             alert(`${this.listItemId} is about to be deleted!`);
         
             try {
-                const response = await fetch(`http://localhost:3000${this.serverRoute}/byDetails`, {
+                const response = await fetch(`${API_BASE_URL}${this.serverRoute}/byDetails`, {
                     method: "DELETE",
                     headers:{"Content-Type":"application/json"},
                     // body: JSON.stringify({productName})

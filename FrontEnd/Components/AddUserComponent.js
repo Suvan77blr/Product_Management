@@ -57,7 +57,7 @@ class AddUserComponent extends HTMLElement {
                 const userData = { userId, username, password, email, role };
 
                 try {
-                    const response = await fetch("http://localhost:3000/users", { // ✅ Use correct route
+                    const response = await fetch(`${API_BASE_URL}/users`, { // ✅ Use correct route
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(userData),

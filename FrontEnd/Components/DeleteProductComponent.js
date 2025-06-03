@@ -42,7 +42,7 @@ class DeleteProductComponent extends HTMLElement
             if(productId)
             {
                 try {
-                    const response = await fetch("http://localhost:3000/products/byDetails", {
+                    const response = await fetch(`${API_BASE_URL}/products/byDetails`, {
                             method: "DELETE",
                             headers:{"Content-Type":"application/json"},
                             body: JSON.stringify({productId})

@@ -256,7 +256,7 @@ class ListItemComponent extends HTMLElement
 
     async fetchProductsFromServer() {
         try {
-            const response = await fetch("http://localhost:3000/products", {
+            const response = await fetch(`${API_BASE_URL}/products`, {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
             });

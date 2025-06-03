@@ -73,7 +73,7 @@ class AddProductComponent extends HTMLElement
                 //     console.log(`${key}:`, value);
                 // }
                 try {
-                    const response = await fetch("http://localhost:3000/products", {
+                    const response = await fetch(`${API_BASE_URL}/products`, {
                             method: "POST",
                             body: formData
                             // No headers, browsers will set the boundary it seems...!

@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Product Management</title>
-    <link rel="stylesheet" href="/Styles/styles.css">
-    <script src="../config.js"></script>
+    <!-- <link rel="stylesheet" href="../FrontEnd/Styles/styles.css"> -->
+    <link rel="stylesheet" href="Styles/styles.css">
+    <script src="./config.js"></script>
 </head>
 
 <body>
@@ -32,28 +33,28 @@
             <!-- <button class="super-user-popup-button">Super User</button>  -->
     </div>
     <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('userLoginForm');
-    if (!form) {
-        console.error("Form not found!");
-        return;
-    }
+        document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('userLoginForm');
+        if (!form) {
+            console.error("Form not found!");
+            return;
+        }
 
-    form.addEventListener('submit', async function (event) {
-        event.preventDefault();
+        form.addEventListener('submit', async function (event) {
+            event.preventDefault();
 
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        console.log("Enter the login form");
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            console.log("Enter the login form");
 
-        try {
-            const response = await fetch(`${API_BASE_URL}/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),
-            });
+            try {
+                const response = await fetch(`${API_BASE_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password }),
+                });
 
-            const values = await response.json();
+                const values = await response.json();
             
 
             if (values.success) {
@@ -63,8 +64,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 localStorage.setItem('authToken', token);
 
                 if (user.role === 'superuser') {
+                    // window.location.href = '../FrontEnd/Pages/SuperUserPage.html';
                     window.location.href = '/Pages/SuperUserPage.html';
                 } else {
+                    // window.location.href = '../FrontEnd/Pages/NormalUserPage.html';
                     window.location.href = '/Pages/NormalUserPage.html';
                 }
             } else {

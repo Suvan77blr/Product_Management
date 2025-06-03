@@ -31,7 +31,7 @@ class DeleteUserComponent extends HTMLElement
             const email = this.querySelector("#email").value.trim();
             try
             {
-                const response = await fetch("http://localhost:3000/users/byDetails", {
+                const response = await fetch(`${API_BASE_URL}/users/byDetails`, {
                     method: "DELETE",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({userId ,email})
