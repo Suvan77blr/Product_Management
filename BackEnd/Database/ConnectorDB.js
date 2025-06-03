@@ -10,6 +10,9 @@ if (process.env.NODE_ENV === "test") {
 
 const connectDB = async () => {
    const mongoURL = process.env.MONGO_URL || "mongodb://localhost:27017/stratify";
+    if (!mongoURL.startsWith("mongodb://") && !mongoURL.startsWith("mongodb+srv://")) {
+        throw new Error(`Invalid MONGO_URL: ${mongoURL}`);
+    }
     try {
         const conn = await mongoose.connect(mongoURL);
         console.log(`MongoDB Connected: ${conn.connection.host}`);
