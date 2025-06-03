@@ -29,6 +29,7 @@ jobs:
       - name: 🛠️ Create .env.test file
         run: |
           echo "MONGO_URL=${{ secrets.MONGOTESTURL }}" > .env.test
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env.test
 
       - name: ✅ Run tests
         run: npm test
