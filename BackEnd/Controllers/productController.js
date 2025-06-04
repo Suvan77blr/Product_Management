@@ -105,7 +105,7 @@ const updateProduct = async (req,res)=>{
         const updatedProduct = await Product.findOneAndUpdate(
             {name},updatedData,{new:true}
         );
-        if(!updateProduct)
+        if(!updatedProduct)
         {
             return res.status(404).json({ success: false, message: "Product not found." });
         }
