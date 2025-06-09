@@ -25,20 +25,7 @@ class ListItemComponent extends HTMLElement
 
     connectedCallback()
     {
-        this.innerHTML = `
-            
-            <div class="product-list-outer-container container">
-                <div class="list-header">
-                    <div class="first-line">
-                        <h2>${this.listTitle}
-                            <button class="list-close-button">x</button>
-                        </h2>
-                    </div>
-                </div>
-                <table class="product-list-container"></table>
-            </div>
-        `;
-
+        this.render();
         // Handling the Outer-Container.
         const productListOuterContainer = this.querySelector(".product-list-outer-container");
         if(productListOuterContainer){
@@ -64,6 +51,14 @@ class ListItemComponent extends HTMLElement
             };
             this.applyStyles(listHeader, listHeader_styles);
         }
+        const listCloseButton = this.querySelector(".list-close-button");
+        // listCloseButton?.onclick = () => {
+        listCloseButton.addEventListener("click", () => {
+            this.dispatchEvent(new CustomEvent("close-list", {
+                bubbles: true,
+                composed: true,
+            }));
+        });
         
         // Logic-Handling Starts from here.
         // Fallback condition for no-items ... yet to be tested.
@@ -145,6 +140,7 @@ class ListItemComponent extends HTMLElement
             addProductPopup.style.left = "50%";
             addProductPopup.style.top = "50%";
             addProductPopup.style.transform = "translate(-50%, 50%)";
+            addProductPopup.style.zIndex = "2000";
 
             addProductPopup.addEventListener("product-added", async () => {
                 let updatedListItems = await this.fetchProductsFromServer();
@@ -181,13 +177,24 @@ class ListItemComponent extends HTMLElement
         });
     }
 
+    render() {
+        this.innerHTML = `
+            
+            <div class="product-list-outer-container container">
+                <div class="list-header">
+                    <div class="first-line">
+                        <h2>${this.listTitle}
+                            <button class="list-close-button">x</button>
+                        </h2>
+                    </div>
+                </div>
+                <table class="product-list-container"></table>
+            </div>
+        `;
+    }
     // Component's method to render the header-bar of the list.
     renderListHeader() {
         const listHeader = this.querySelector(".list-header");
-        const listCloseButton = this.querySelector(".list-close-button");
-        listCloseButton.onclick = () => {
-            this.remove();
-        };
         if(listHeader) {
             const listHeaderStyles = {
                 "display": "flex",

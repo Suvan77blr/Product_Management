@@ -1,12 +1,3 @@
-/* :root {
-    --primary-bg-color: #E4EFE7;
-    --secondary-bg-color: #FAF1E6;
-
-    --primary-heading-color: #f1d684;
-
-    --primary-button-color: #F2E2B1;
-    --button-hover-color: #E2C98D;
-} */
 :root {
     --primary-bg-color: #7cf39b;
     --secondary-bg-color: #f9c585;
@@ -18,7 +9,6 @@
 
     --popup-container-color: #f2e2da;
 }
-
 
 body {
     background-color: var(--primary-bg-color);

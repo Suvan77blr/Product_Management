@@ -6,6 +6,7 @@ class DeleteProductComponent extends HTMLElement
     }
     connectedCallback()
     {
+        console.log("Delete-Product-Component mounted");
         this.innerHTML = `
             <div class="popup-container">
                     <h2>Delete Product
@@ -23,8 +24,12 @@ class DeleteProductComponent extends HTMLElement
 
         const closeButton = this.querySelector(".close-popup");
         closeButton.addEventListener("click", () => {
-            this.remove();
+            // this.remove();
+            this.dispatchEvent(new CustomEvent("close-delete", { 
+                bubbles: true, composed: true 
+            }));
         });
+
 
         // Prevent event bubbling inside the popup.
         this.querySelector(".popup-container").addEventListener("click", (event) => {
@@ -41,8 +46,11 @@ class DeleteProductComponent extends HTMLElement
 
             if(productId)
             {
+                const API_ROUTE = "/products/byDetails";
+                const IS_DEVELOPMENT = import.meta.env.MODE === 'development';
+                const rqstURL = IS_DEVELOPMENT ? API_ROUTE : (import.meta.env.VITE_API_BASE_URL + API_ROUTE);
                 try {
-                    const response = await fetch(`${API_BASE_URL}/products/byDetails`, {
+                    const response = await fetch(`${rqstURL}`, {
                             method: "DELETE",
                             headers:{"Content-Type":"application/json"},
                             body: JSON.stringify({productId})

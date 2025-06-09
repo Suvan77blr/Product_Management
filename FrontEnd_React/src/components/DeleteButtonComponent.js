@@ -17,7 +17,7 @@ class DeleteButtonComponent extends HTMLElement
     {
         this.innerHTML = `
             <button class="list-component-delete-button">
-             <img src="../Assets/deleteButtonIcon.jpg" height=30 width=25></img></button>
+             <img src="/assets/deleteButtonIcon.jpg" height=30 width=25></img></button>
         `;
 
         // const deleteButton = this.querySelector(".list-component-delete-button");
@@ -27,8 +27,11 @@ class DeleteButtonComponent extends HTMLElement
 
             alert(`${this.listItemId} is about to be deleted!`);
         
+            const API_ROUTE = "/products/byDetails";
+            const IS_DEVELOPMENT = import.meta.env.MODE === "development";
+            const rqstURL = IS_DEVELOPMENT ? API_ROUTE : `${import.meta.env.VITE_API_BASE_URL}${API_ROUTE}`;
             try {
-                const response = await fetch(`${API_BASE_URL}${this.serverRoute}/byDetails`, {
+                const response = await fetch(`${rqstURL}`, {
                     method: "DELETE",
                     headers:{"Content-Type":"application/json"},
                     // body: JSON.stringify({productName})

@@ -4,8 +4,10 @@ class AddProductComponent extends HTMLElement
     {
         super();
     }
+
     connectedCallback()
     {
+        console.log("Add-Product-Component mounted");
         this.innerHTML = `
             <div class="popup-container">
                     <h2>Add New Product</h2>
@@ -30,12 +32,16 @@ class AddProductComponent extends HTMLElement
                     </form>
             </div>
         `;
+
         const productForm = this.querySelector("#addProductForm");
 
         const closeButton = this.querySelector(".close-popup");
         closeButton.addEventListener("click", () => {
+            // this.remove();
             productForm.reset();
-            this.remove();
+            this.dispatchEvent(new CustomEvent("close-delete", { 
+                bubbles: true, composed: true 
+            }));
         });
 
         // Prevent event bubbling inside the popup.
@@ -69,11 +75,15 @@ class AddProductComponent extends HTMLElement
                 if(imageFile) {
                     formData.append("image", imageFile);
                 }
+
+                const API_ROUTE = "/products";
+                const IS_DEVELOPMENT = import.meta.env.MODE === 'development';
+                const rqstURL = IS_DEVELOPMENT ? API_ROUTE : (import.meta.env.VITE_API_BASE_URL + API_ROUTE);
                 // for (const [key, value] of formData.entries()) {
                 //     console.log(`${key}:`, value);
                 // }
                 try {
-                    const response = await fetch(`${API_BASE_URL}/products`, {
+                    const response = await fetch(`${rqstURL}`, {
                             method: "POST",
                             body: formData
                             // No headers, browsers will set the boundary it seems...!

@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import "./components/PageFooterComponent.js"
-import "./components/ListItemComponent.js"
+import "./components/PageFooterComponent.js";
+import "./components/ListItemComponent.js";
+// import "./components/AddProductComponent.js";
+// import "./components/DeleteProductComponent.js";
+import DeleteProductComponent from "./components/DeleteProductComponent.jsx" ;
+import AddProductComponent from "./components/AddProductComponent.jsx";
+import useOutsideClick from "./hooks/useOutsideClick.jsx";
 
 const ManageProducts = () => {
     const navigate = useNavigate();
@@ -10,7 +15,7 @@ const ManageProducts = () => {
         const footerElement = document.querySelector("page-footer-component");
 
         const handleLogout = () => {
-        navigate("/login"); // React Router handles redirect
+            navigate("/login"); // React Router handles redirect
         };
 
         footerElement?.addEventListener("logout", handleLogout);
@@ -19,6 +24,7 @@ const ManageProducts = () => {
             footerElement?.removeEventListener("logout", handleLogout);
         };
     }, [navigate]);
+    
     // State to hold product list
     const API_ROUTE = "/products";
     const IS_DEVELOPMENT = import.meta.env.MODE === 'development';
@@ -33,21 +39,51 @@ const ManageProducts = () => {
     const [showDeleteProduct, setShowDeleteProduct] = useState(false);
 
     // Handling clicks outside the popups to close them.
+
+    const listItemRef = useRef(null);
+    const addProductRef = useRef(null);
+    const deleteProductRef = useRef(null);
+
     useEffect( () => {
-        const handleBodyClick = () => {
+        const listEl = listItemRef.current;
+        const addEl = addProductRef.current;
+        const delEl = deleteProductRef.current;
+
+        if (!listEl && !addEl && !delEl) return;
+
+        const handleListClose = (e) => {
+            e.stopPropagation();
             setShowViewProducts(false);
+        };
+        const handleAddClose = (e) => {
+            e.stopPropagation();
             setShowAddProduct(false);
+        };
+        const handleDeleteClose = (e) => {
+            e.stopPropagation();
             setShowDeleteProduct(false);
         };
 
-        if (showViewProducts || showAddProduct || showDeleteProduct) {
-            document.body.addEventListener("click", handleBodyClick);
-        }
+        // listEl?.addEventListener("close-list", handleListClose);
+        // addEl?.addEventListener("close-add", handleAddClose);
+        // delEl?.addEventListener("close-delete", handleDeleteClose);
+        if (listEl) listEl.addEventListener("close-list", handleListClose);
+        if (addEl) addEl.addEventListener("close-add", handleAddClose);
+        if (delEl) delEl.addEventListener("close-delete", handleDeleteClose);
 
         return () => {
-            document.body.removeEventListener("click", handleBodyClick);
+            // listEl.removeEventListener("close-list", handleListClose);
+            // addEl.removeEventListener("close-add", handleAddClose);
+            // delEl.removeEventListener("close-delete", handleDeleteClose);
+            if (listEl?.removeEventListener) listEl.removeEventListener("close-list", handleListClose);
+            if (addEl?.removeEventListener) addEl.removeEventListener("close-add", handleAddClose);
+            if (delEl?.removeEventListener) delEl.removeEventListener("close-delete", handleDeleteClose);
         };
     }, [showViewProducts, showAddProduct, showDeleteProduct]);
+
+    useOutsideClick(listItemRef, () => setShowViewProducts(false));
+    useOutsideClick(addProductRef, () => setShowAddProduct(false));
+    useOutsideClick(deleteProductRef, () => setShowDeleteProduct(false));
 
     // Fetching products from API.
     const fetchProducts = async () => {
@@ -96,8 +132,18 @@ const ManageProducts = () => {
         backgroundColor: "white",
         boxShadow: "0 0 15px rgba(0,0,0,0.3)",
     };
+    const centeredPopupStyle = {
+        ...popupStyle,
+        transform: "translate(-50%, -50%)",
+        height: "auto",
+        width: "auto",
+        padding: "20px",
+        borderRadius: "8px",
+        boxShadow: "0 0 15px rgba(0,0,0,0.3)",
+        zIndex: 1001,
+    };
 
-    const listItemRef = useRef(null);
+    // const listItemRef = useRef(null);
     useEffect(() => {
         if (showViewProducts && listItemRef.current && Array.isArray(productList)) {
             listItemRef.current.initialize(
@@ -112,6 +158,18 @@ const ManageProducts = () => {
         }
     }, [showViewProducts, productList, rqstURL]); // run this effect when any dependency changes
 
+    useEffect(() => {
+        const handleProductAdded = () => {
+            console.log("Product added! Refreshing list...");
+            fetchProducts(); // Or update the UI however you want
+        };
+        const observer = document.body;
+        observer.addEventListener("product-added", handleProductAdded);
+
+        return () => {
+            observer.removeEventListener("product-added", handleProductAdded);
+        };
+    }, []);
     
     return (
     <div className="products-container container">
@@ -158,7 +216,8 @@ const ManageProducts = () => {
 
             {/* Render custom web components conditionally */}
             
-            {showViewProducts && Array.isArray(productList) && productList.length > 0 && (
+            {/* {showViewProducts && Array.isArray(productList) && productList.length > 0 && ( */}
+            {showViewProducts &&  (
                 <list-item-component
                     style={popupStyle}
                     ref={listItemRef}
@@ -167,28 +226,43 @@ const ManageProducts = () => {
                 />
             )}
 
-            {showAddProduct && (
+            {/* {showAddProduct && (
             <add-product-component
-                style={{
-                    ...popupStyle,
-                    height: "auto",
-                    width: "auto",
-                    transform: "translate(-50%, 50%)",
-                }}
+                style={
+                    // ...popupStyle,
+                    // key: "add",
+                    // height: "auto",
+                    // width: "auto",
+                    // transform: "translate(-50%, 50%)",
+                    centeredPopupStyle
+                }
+                ref={addProductRef}
                 onClick={(e) => e.stopPropagation()}
             />
-            )}
+            )} */}
+
+            {showAddProduct && (
+                <AddProductComponent 
+                    onClose={() => setShowAddProduct(false)}
+                    ref={addProductRef}
+                    // onProductAdded={() => fetchProducts()}
+                />
+            ) }
 
             {showDeleteProduct && (
-            <delete-product-component
-                style={{
-                    ...popupStyle,
-                    height: "auto",
-                    width: "auto",
-                    transform: "translate(-50%, 50%)",
-                }}
-                onClick={(e) => e.stopPropagation()}
-            />
+                <DeleteProductComponent />
+            // <delete-product-component
+            //     style={
+            //         // ...popupStyle,
+            //         // key: "delete",
+            //         // height: "auto",
+            //         // width: "auto",
+            //         // transform: "translate(-50%, 50%)",
+            //         popupStyle
+            //     }
+            //     ref={deleteProductRef}
+            //     onClick={(e) => e.stopPropagation()}
+            // />
             )}
 
             {/* Page footer component */}

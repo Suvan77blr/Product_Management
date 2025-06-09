@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import './styles/SuperUserStyles.css'
+// import './styles/SuperUserStyles.css'
+import './styles/GlobalStyles.css'
 
 // import PageFooterComponent from "./components/PageFooterComponent";
 import "./components/PageFooterComponent.js"
@@ -43,7 +44,7 @@ function SuperUserPage() {
             </div>
 
             {/* Stub for PageFooterComponent (until Reactification is done): */}
-            <page-footer-component buttons={JSON.stringify(["dashboard", "logout"])} />
+            <page-footer-component buttons={JSON.stringify(["logout"])} />
         </>
     )
 }
