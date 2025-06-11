@@ -42,6 +42,7 @@ class AddProductComponent extends HTMLElement
             this.dispatchEvent(new CustomEvent("close-delete", { 
                 bubbles: true, composed: true 
             }));
+            this.remove();
         });
 
         // Prevent event bubbling inside the popup.

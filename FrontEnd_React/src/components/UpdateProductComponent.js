@@ -131,6 +131,9 @@ class UpdateProductComponent extends HTMLElement {
                     bubbles: true,
                     composed: true
                 }));
+// Trying to DOM-remove it.
+                // productForm.reset();
+                this.remove();
                 
             } catch(err) {
                 alert("Error updating product: " + err.message);

@@ -286,7 +286,11 @@ const ManageProducts = () => {
             ) }
 
             {showDeleteProduct && (
-                <DeleteProductComponent />
+                <DeleteProductComponent
+                    ref={deleteProductRef} 
+                    onClick={(e) => e.stopPropagation()}
+                    onClose={() => setShowDeleteProduct(false)} 
+                />
             // <delete-product-component
             //     style={
             //         // ...popupStyle,

@@ -46,8 +46,9 @@ const UpdateProductComponent = forwardRef(({onClose, popupStyle}, ref) => {
             }
             const data = await res.json();
             setProduct(data.data); // access the actual product from `data`
+            setStatus(null);
         } catch (error) {
-            console.error("Error fetching product details:", error);
+            // console.error("Error fetching product details:", error);
             setStatus("Product not fetched.");
             setProduct(null);
         }

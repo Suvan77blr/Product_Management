@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./components/PageFooterComponent.js";
 import "./components/ListItemComponent.js";
-// import "./components/AddProductComponent.js";
-// import "./components/DeleteProductComponent.js";
+import "./components/ViewUsersComponent.js"
 
 import useOutsideClick from "./hooks/useOutsideClick.jsx";
 import { set } from "mongoose";
@@ -30,7 +29,7 @@ const ManageUsers = () => {
         };
     }, [navigate]);
     
-    // State to hold product list
+    // State to hold user list
     const API_ROUTE = "/users";
     const IS_DEVELOPMENT = import.meta.env.MODE === 'development';
     const rqstURL = IS_DEVELOPMENT ? API_ROUTE : (import.meta.env.VITE_API_BASE_URL + API_ROUTE);
@@ -66,6 +65,10 @@ const ManageUsers = () => {
             e.stopPropagation();
             setShowViewUsers(false);
         };
+        // const handleListClose = (e) => {
+        //     e.stopPropagation();
+        //     setShowViewUsers(false);
+        // };
         const handleAddClose = (e) => {
             e.stopPropagation();
             setShowAddUser(false);
@@ -117,7 +120,7 @@ const ManageUsers = () => {
                     headers: { "Content-Type": "application/json"},
                 }
             );
-
+            console.log(response);
             if(response.ok) {
                 const result = await response.json();
                 setUserList(result.data);
@@ -133,7 +136,8 @@ const ManageUsers = () => {
     };
 
     // Map headers to keys for list-item-component.
-    const usersListMenuBar = ["ID", "Name", "Email", "Role", "UpdateBtn", "DeleteBtn"];
+    const usersListMenuBar = Array("ID", "Name", "Email", "Role");
+    // const usersListMenuBar = ["ID", "Name", "Email", "Role"];
     const headerToKeyMap = {
         "ID": "userId",
         "Name": "username",
@@ -166,20 +170,28 @@ const ManageUsers = () => {
         zIndex: 1001,
     };
 
-    // const listItemRef = useRef(null);
     useEffect(() => {
         if (showViewUsers && listItemRef.current && Array.isArray(userList)) {
-            listItemRef.current.initialize(
-            userList,
-            usersListMenuBar,
-            usersListTitle,
-            headerToKeyMap,
-            rqstURL  // using the computed request URL here!
-        );
-        // Force render of the component's internal DOM after initialize
-        listItemRef.current.connectedCallback();
+            setTimeout(() => {
+                listItemRef.current.initialize(userList);
+            }, 0); // ensures next event loop tick
         }
-    }, [showViewUsers, userList, rqstURL]); // run this effect when any dependency changes
+    }, [showViewUsers, userList]);
+
+    // Earlier version which was causing no-data.
+    // useEffect(() => {
+    //     if (showViewUsers && listItemRef.current && Array.isArray(userList)) {
+    //         listItemRef.current.initialize(
+    //         userList,
+    //         // usersListMenuBar,
+    //         // usersListTitle,
+    //         // headerToKeyMap,
+    //         // rqstURL  // using the computed request URL here!
+    //     );
+    //     // Force render of the component's internal DOM after initialize
+    //     // listItemRef.current.connectedCallback();
+    //     }
+    // }, [showViewUsers, userList, rqstURL]); // run this effect when any dependency changes
 
     useEffect(() => {
         const handleUserAdded = () => {
@@ -256,14 +268,24 @@ const ManageUsers = () => {
             {/* Render custom web components conditionally */}
             
             {/* {showViewUsers && Array.isArray(userList) && userList.length > 0 && ( */}
-            {showViewUsers &&  (
+            { showViewUsers &&  (
+                <view-users-component
+                    style={popupStyle}
+                    ref={listItemRef}
+                    // Prevent clicks inside popup from bubbling to body (which closes popup)
+                    onClick={(e) => e.stopPropagation()}
+                />
+            ) }
+
+            {/* Need to UNCOMMENT: listItemRef.current.initialize */}
+            {/* {showViewUsers &&  (
                 <list-item-component
                     style={popupStyle}
                     ref={listItemRef}
                     // Prevent clicks inside popup from bubbling to body (which closes popup)
                     onClick={(e) => e.stopPropagation()}
                 />
-            )}
+            )} */}
 
             {/* {showAddUser && (
             <add-user-component
@@ -289,7 +311,10 @@ const ManageUsers = () => {
             ) }
 
             {showDeleteUser && (
-                <DeleteUserComponent />
+                <DeleteUserComponent 
+                    onClose={() => setShowDeleteUser(false)}
+                    ref={deleteUserRef}
+                />
             // <delete-User-component
             //     style={
             //         // ...popupStyle,

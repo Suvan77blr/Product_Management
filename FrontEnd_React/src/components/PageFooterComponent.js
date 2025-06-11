@@ -68,7 +68,7 @@ class PageFooterComponent extends HTMLElement
         
         const pageFooter = this.querySelector(".page-footer");
         if (!this.buttonsList || this.buttonsList.length === 0) return;
-        console.log(this.buttonsList);
+        // console.log(this.buttonsList);
 
         // const pageFooterButtonsContainer = document.createElement("div");
         // pageFooterButtonsContainer.className = "page-footer-button-container";
