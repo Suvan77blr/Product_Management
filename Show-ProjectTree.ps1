@@ -12,7 +12,7 @@
 # Default values.
 param (
     [string]$Path = ".",
-    [string[]]$ExcludeDirs = @("node_modules", ".git"),
+    [string[]]$ExcludeDirs = @(),
     [int]$MaxDepth = 5
 )
 
@@ -47,6 +47,8 @@ function Show-Tree {
         }
     }
 }
+
+$ExcludeDirs = ($ExcludeDirs + @("node_modules", ".git")) | Select-Object -Unique
 
 # Call the function with user-supplied arguments
 Show-Tree -Path $Path -ExcludeDirs $ExcludeDirs -MaxDepth $MaxDepth

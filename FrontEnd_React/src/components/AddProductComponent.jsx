@@ -31,11 +31,11 @@ const AddProductComponent = forwardRef(({ onClose, onProductAdded }, ref) => {
         };
 
         document.addEventListener("mousedown", handleOutsideClick);
-
         return () => {
             document.removeEventListener("mousedown", handleOutsideClick);
         };
     }, [onClose]);
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
 

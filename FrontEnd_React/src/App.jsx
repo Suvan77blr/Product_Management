@@ -7,7 +7,7 @@ import LoginPage from "./LoginPage";
 import SuperUserPage from "./SuperUserPage";
 import ProtectedRoute from './components/ProtectedRoute';
 import ManageProducts from "./ManageProducts.jsx";
-// import ManageUsers from "./ManageUsers.jsx"; // if Reactified
+import ManageUsers from "./ManageUsers.jsx"; // if Reactified
 
 function App() {
     // const [count, setCount] = useState(0);
@@ -22,6 +22,7 @@ function App() {
 
         <Route path="/superuser" element={<SuperUserPage />} />
         <Route path="/products/manage" element={<ManageProducts />} />
+        <Route path="/users/manage" element={<ManageUsers />} />
 
         {/* Protected Routes*/}
         {/* <Route

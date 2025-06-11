@@ -19,7 +19,7 @@ const createUser= async (req, res) => {
     const userData = req.body;
     if(!userData.userId || !userData.username || !userData.password || !userData.email || !userData.role)
     {
-        res.status(400).json({success:false, message:"Please provide all the details"});
+        return res.status(400).json({success:false, message:"Please provide all the details"});
     }
     
     // Checking uniqueness of both UserId & email.

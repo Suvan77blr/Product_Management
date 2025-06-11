@@ -26,7 +26,6 @@ app.use(
 
 */
 
-
 // API Routes. -> 2.
 app.use("/users", userRouter);
 app.use("/products", productRouter);
@@ -41,6 +40,7 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../FrontEnd_React/dist/index.html"));
 });
 
+module.exports = app;
 // app.use("/uploads", express.static(path.join(__dirname, "uploads")));   // For serving uploads.
 
 // Vanilla-Stack Static pages handling...
@@ -50,7 +50,7 @@ app.get("*", (req, res) => {
 
 // Catch-all route: for React Router (client-side routing)
 
-module.exports = app;
+// module.exports = app;
 
 
 

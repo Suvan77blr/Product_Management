@@ -1,5 +1,7 @@
 import DeleteButtonComponent from "./DeleteButtonComponent.js";
 import AddProductComponent from "./AddProductComponent.js";
+import UpdateButtonComponent from "./UpdateButtonComponent.js";
+
 
 class ListItemComponent extends HTMLElement
 {
@@ -116,6 +118,11 @@ class ListItemComponent extends HTMLElement
                     deleteBtn.initialize(product.productId, this.associatedServerRoute);
                     rowData.appendChild(deleteBtn);
                 }
+                else if (headerName === "UpdateBtn") {
+                    const updateBtn = document.createElement("update-button-component");
+                    updateBtn.initialize(product.productId, this.associatedServerRoute);
+                    rowData.appendChild(updateBtn);
+                }
                 else {
                     // Temporary setting.
                     rowData.textContent = `${headerName}?`;
@@ -169,6 +176,18 @@ class ListItemComponent extends HTMLElement
                     rowItem.remove();
                 }
             });
+        });
+
+        // Update-Button Event Listener.
+        this.addEventListener("item-updated", (e) => 
+        {
+            const productIdUpdated = e.detail.productId;
+            const updatedProduct = e.detail.updatedProduct;
+            const index = this.objectItemsArray.findIndex(p => p.productId === productIdUpdated);
+            if (index !== -1) {
+                this.objectItemsArray[index] = updatedProduct;
+                this.connectedCallback();
+            }
         });
 
         // Prevent event bubbling inside the popup

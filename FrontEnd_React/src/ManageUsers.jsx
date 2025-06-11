@@ -4,13 +4,16 @@ import "./components/PageFooterComponent.js";
 import "./components/ListItemComponent.js";
 // import "./components/AddProductComponent.js";
 // import "./components/DeleteProductComponent.js";
-import DeleteProductComponent from "./components/DeleteProductComponent.jsx" ;
-import AddProductComponent from "./components/AddProductComponent.jsx";
-import UpdateProductComponent from "./components/UpdateProductsComponent.jsx";
 
 import useOutsideClick from "./hooks/useOutsideClick.jsx";
+import { set } from "mongoose";
 
-const ManageProducts = () => {
+// Yet to define...
+import DeleteUserComponent from "./components/DeleteUserComponent.jsx";
+import AddUserComponent from "./components/AddUserComponent.jsx";
+import UpdateUserComponent from "./components/UpdateUserComponent.jsx";
+
+const ManageUsers = () => {
     const navigate = useNavigate();
     
     useEffect(() => {
@@ -28,53 +31,53 @@ const ManageProducts = () => {
     }, [navigate]);
     
     // State to hold product list
-    const API_ROUTE = "/products";
+    const API_ROUTE = "/users";
     const IS_DEVELOPMENT = import.meta.env.MODE === 'development';
     const rqstURL = IS_DEVELOPMENT ? API_ROUTE : (import.meta.env.VITE_API_BASE_URL + API_ROUTE);
     console.log('Requesting API URL:', rqstURL); 
 
-    const [productList, setProductList] = useState(null);
+    const [userList, setUserList] = useState(null);
 
     // To control visibility of popup components
-    const [showViewProducts, setShowViewProducts] = useState(false);
-    const [showAddProduct, setShowAddProduct] = useState(false);
-    const [showDeleteProduct, setShowDeleteProduct] = useState(false);
+    const [showViewUsers, setShowViewUsers] = useState(false);
+    const [showAddUser, setShowAddUser] = useState(false);
+    const [showDeleteUser, setShowDeleteUser] = useState(false);
 /* Updation */
-    const [showUpdateProduct, setShowUpdateProduct] = useState(false);
+    const [showUpdateUser, setShowUpdateUser] = useState(false);
     // Handling clicks outside the popups to close them.
 
     const listItemRef = useRef(null);
-    const addProductRef = useRef(null);
-    const deleteProductRef = useRef(null);
+    const addUserRef = useRef(null);
+    const deleteUserRef = useRef(null);
 /* Updation */
-    const updateProductRef = useRef(null);    
+    const updateUserRef = useRef(null);    
 
     useEffect( () => {
         const listEl = listItemRef.current;
-        const addEl = addProductRef.current;
-        const delEl = deleteProductRef.current;
+        const addEl = addUserRef.current;
+        const delEl = deleteUserRef.current;
 /* Updation */
-        const updateEl = updateProductRef.current;
+        const updateEl = updateUserRef.current;
 
 /* Updation */        
         if (!listEl && !addEl && !delEl && !updateEl) return;
 
         const handleListClose = (e) => {
             e.stopPropagation();
-            setShowViewProducts(false);
+            setShowViewUsers(false);
         };
         const handleAddClose = (e) => {
             e.stopPropagation();
-            setShowAddProduct(false);
+            setShowAddUser(false);
         };
         const handleDeleteClose = (e) => {
             e.stopPropagation();
-            setShowDeleteProduct(false);
+            setShowDeleteUser(false);
         };
 /* Updation */
         const handleUpdateClose = (e) => {
             e.stopPropagation();
-            setShowUpdateProduct(false);
+            setShowUpdateUser(false);
         }
 
         // listEl?.addEventListener("close-list", handleListClose);
@@ -96,17 +99,17 @@ const ManageProducts = () => {
 /* Updation */
             if (updateEl?.removeEventListener) updateEl.removeEventListener("close-update", handleUpdateClose);
         };
-    }, [showViewProducts, showAddProduct, showDeleteProduct, showUpdateProduct]);
+    }, [showViewUsers, showAddUser, showDeleteUser, showUpdateUser]);
 /* Updation */
 
-    useOutsideClick(listItemRef, () => setShowViewProducts(false));
-    useOutsideClick(addProductRef, () => setShowAddProduct(false));
-    useOutsideClick(deleteProductRef, () => setShowDeleteProduct(false));
+    useOutsideClick(listItemRef, () => setShowViewUsers(false));
+    useOutsideClick(addUserRef, () => setShowAddUser(false));
+    useOutsideClick(deleteUserRef, () => setShowDeleteUser(false));
 /* Updation */
-    useOutsideClick(updateProductRef, () => setShowUpdateProduct(false));
+    useOutsideClick(updateUserRef, () => setShowUpdateUser(false));
 
-    // Fetching products from API.
-    const fetchProducts = async () => {
+    // Fetching Users from API.
+    const fetchUsers = async () => {
         try {
             const response = await fetch(`${rqstURL}`,
                 {
@@ -117,27 +120,27 @@ const ManageProducts = () => {
 
             if(response.ok) {
                 const result = await response.json();
-                setProductList(result.data);
+                setUserList(result.data);
             } else {
-                setProductList([]);
-                alert("No Products found");
+                setUserList([]);
+                alert("No Users found");
             }
         } catch(error) {
-            alert("Error fetching Products");
+            alert("Error fetching Users");
             console.error(error);
-            setProductList([]);
+            setUserList([]);
         }
     };
 
     // Map headers to keys for list-item-component.
-    const productsListMenuBar = ["ID", "Name", "Quantity", "Unit Price", "UpdateBtn", "DeleteBtn"];
+    const usersListMenuBar = ["ID", "Name", "Email", "Role", "UpdateBtn", "DeleteBtn"];
     const headerToKeyMap = {
-        "ID": "productId",
-        "Name": "name",
-        "Quantity": "quantity",
-        "Unit Price": "price",
+        "ID": "userId",
+        "Name": "username",
+        "Email": "email",
+        "Role": "role",
     };
-    const productsListTitle = "Product List";
+    const usersListTitle = "Users List";
 
     // Style object for popups (similar to your inline styles)
     const popupStyle = {
@@ -165,86 +168,86 @@ const ManageProducts = () => {
 
     // const listItemRef = useRef(null);
     useEffect(() => {
-        if (showViewProducts && listItemRef.current && Array.isArray(productList)) {
+        if (showViewUsers && listItemRef.current && Array.isArray(userList)) {
             listItemRef.current.initialize(
-            productList,
-            productsListMenuBar,
-            productsListTitle,
+            userList,
+            usersListMenuBar,
+            usersListTitle,
             headerToKeyMap,
             rqstURL  // using the computed request URL here!
         );
         // Force render of the component's internal DOM after initialize
         listItemRef.current.connectedCallback();
         }
-    }, [showViewProducts, productList, rqstURL]); // run this effect when any dependency changes
+    }, [showViewUsers, userList, rqstURL]); // run this effect when any dependency changes
 
     useEffect(() => {
-        const handleProductAdded = () => {
-            console.log("Product added! Refreshing list...");
-            fetchProducts(); // Or update the UI however you want
+        const handleUserAdded = () => {
+            console.log("User added! Refreshing list...");
+            fetchUsers(); // Or update the UI however you want
         };
         const observer = document.body;
-        observer.addEventListener("product-added", handleProductAdded);
+        observer.addEventListener("user-added", handleUserAdded);
 
         return () => {
-            observer.removeEventListener("product-added", handleProductAdded);
+            observer.removeEventListener("user-added", handleUserAdded);
         };
     }, []);
     
     return (
-    <div className="products-container container">
-        <h2>Product Inventory</h2>
+    <div className="users-container container">
+        <h2>User Inventory</h2>
             <div className="buttonsContainer">
                 <button
-                    className="viewProductsButton"
+                    className="viewUsersButton"
                     onClick={(e) => {
                         e.stopPropagation();
-                        fetchProducts();
-                        setShowViewProducts(true);
-                        setShowAddProduct(false);
-                        setShowDeleteProduct(false);
-{/* Updation */}        setShowUpdateProduct(false);
+                        fetchUsers();
+                        setShowViewUsers(true);
+                        setShowAddUser(false);
+                        setShowDeleteUser(false);
+{/* Updation */}        setShowUpdateUser(false);
                     }}
                 >
-                View Products
+                View Users
                 </button>
 
                 <button
-                    className="addProductButton"
+                    className="addUserButton"
                     onClick={(e) => {
                         e.stopPropagation();
-                        setShowAddProduct(true);
-                        setShowViewProducts(false);
-                        setShowDeleteProduct(false);
-{/* Updation */}        setShowUpdateProduct(false);                        
+                        setShowAddUser(true);
+                        setShowViewUsers(false);
+                        setShowDeleteUser(false);
+{/* Updation */}        setShowUpdateUser(false);                        
                     }}
                 >
-                Add Product
+                Add User
                 </button>
                 <button
-                    className="deleteProductButton"
+                    className="deleteUserButton"
                     onClick={(e) => {
                         e.stopPropagation();
-                        setShowDeleteProduct(true);
-                        setShowViewProducts(false);
-                        setShowAddProduct(false);
-{/* Updation */}        setShowUpdateProduct(false);
+                        setShowDeleteUser(true);
+                        setShowViewUsers(false);
+                        setShowAddUser(false);
+{/* Updation */}        setShowUpdateUser(false);
                     }}
                 >
-                Delete Product
+                Delete User
                 </button>
 {/* Updation */}
                 <button
-                    className="updateProductButton"
+                    className="updateUserButton"
                     onClick={(e) => {
                         e.stopPropagation();
-                        setShowUpdateProduct(true);
-                        setShowViewProducts(false);
-                        setShowAddProduct(false);
-                        setShowDeleteProduct(false);
+                        setShowUpdateUser(true);
+                        setShowViewUsers(false);
+                        setShowAddUser(false);
+                        setShowDeleteUser(false);
                     }}
                 >
-                Update Product
+                Update User
                 </button>
             </div>
 
@@ -252,8 +255,8 @@ const ManageProducts = () => {
 
             {/* Render custom web components conditionally */}
             
-            {/* {showViewProducts && Array.isArray(productList) && productList.length > 0 && ( */}
-            {showViewProducts &&  (
+            {/* {showViewUsers && Array.isArray(userList) && userList.length > 0 && ( */}
+            {showViewUsers &&  (
                 <list-item-component
                     style={popupStyle}
                     ref={listItemRef}
@@ -262,8 +265,8 @@ const ManageProducts = () => {
                 />
             )}
 
-            {/* {showAddProduct && (
-            <add-product-component
+            {/* {showAddUser && (
+            <add-user-component
                 style={
                     // ...popupStyle,
                     // key: "add",
@@ -272,22 +275,22 @@ const ManageProducts = () => {
                     // transform: "translate(-50%, 50%)",
                     centeredPopupStyle
                 }
-                ref={addProductRef}
+                ref={addUserRef}
                 onClick={(e) => e.stopPropagation()}
             />
             )} */}
 
-            {showAddProduct && (
-                <AddProductComponent 
-                    onClose={() => setShowAddProduct(false)}
-                    ref={addProductRef}
-                    // onProductAdded={() => fetchProducts()}
+            {showAddUser && (
+                <AddUserComponent 
+                    onClose={() => setShowAddUser(false)}
+                    ref={addUserRef}
+                    // onUserAdded={() => fetchUsers()}
                 />
             ) }
 
-            {showDeleteProduct && (
-                <DeleteProductComponent />
-            // <delete-product-component
+            {showDeleteUser && (
+                <DeleteUserComponent />
+            // <delete-User-component
             //     style={
             //         // ...popupStyle,
             //         // key: "delete",
@@ -296,18 +299,18 @@ const ManageProducts = () => {
             //         // transform: "translate(-50%, 50%)",
             //         popupStyle
             //     }
-            //     ref={deleteProductRef}
+            //     ref={deleteUserRef}
             //     onClick={(e) => e.stopPropagation()}
             // />
             )}
 
 {/* Updation */}        
-            {showUpdateProduct && (
-                <UpdateProductComponent 
-                    ref={updateProductRef}
+            {showUpdateUser && (
+                <UpdateUserComponent 
+                    ref={updateUserRef}
                     onClick={ (e) => e.stopPropagation() }
                     popupStyle={centeredPopupStyle} // updated}
-                    onClose={() => setShowUpdateProduct(false)}
+                    onClose={() => setShowUpdateUser(false)}
                 />
             )}
 
@@ -317,4 +320,4 @@ const ManageProducts = () => {
     );
 };
 
-export default ManageProducts;
+export default ManageUsers;

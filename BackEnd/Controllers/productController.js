@@ -16,10 +16,17 @@ const getAllProducts = async(req,res)=>
     }
 };
 
-const getProductByName = async (req, res) => {
+const getProductById = async (req, res) => {
     try {
-        const name = req.body;
-        const product= await Product.findOne({name});
+        // const { productId } = req.body;
+        const { productId } = req.params;
+        if(!productId) {
+            return res.status(400).json({success: false, message: "Product ID required"});
+        }
+        const product = await Product.findOne({ productId });
+        if (!product) {
+            return res.status(404).json({ success: false, message: "Product not found" });
+        }
         res.status(200).json({success: true, data: product});
     }
     catch(error) {
@@ -96,14 +103,20 @@ const deleteProduct = async (req, res)=>{
 
 
 const updateProduct = async (req,res)=>{
-    const {name ,...updatedData}= req.body;
-    if(!name)
+    const {productId ,...updatedData}= req.body;
+    if(!productId)
     {
-        return res.status(400).json({ success: false, message: "Name of the product is required." });
+        return res.status(400).json({ success: false, message: "productId of the product is required." });
     }
+    // const {name ,...updatedData}= req.body;
+    // if(!name)
+    // {
+    //     return res.status(400).json({ success: false, message: "Name of the product is required." });
+    // }
     try{
         const updatedProduct = await Product.findOneAndUpdate(
-            {name},updatedData,{new:true}
+            {productId}, updatedData, {new:true}
+            // {name},updatedData,{new:true}
         );
         if(!updatedProduct)
         {
@@ -116,4 +129,4 @@ const updateProduct = async (req,res)=>{
     res.status(500).json({ success: false, message: "Server Error" });
     }   
 }
-module.exports = {getAllProducts,getProductByName,createProduct,deleteProduct,updateProduct};
+module.exports = {getAllProducts,getProductById,createProduct,deleteProduct,updateProduct};
