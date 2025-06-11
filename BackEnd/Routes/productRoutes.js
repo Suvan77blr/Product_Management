@@ -18,10 +18,11 @@ const storage = multer.diskStorage
 });
 const upload= multer({storage});
 const productRouter = express.Router();
+
+productRouter.post("/", upload.single("image"), createProduct);
 productRouter.get("/",getAllProducts);
 productRouter.get("/byId/:productId",getProductById);
 productRouter.delete("/byDetails",deleteProduct);
 productRouter.put("/byDetails",updateProduct);
-productRouter.post("/",upload.single("image"),createProduct);
 
 module.exports = productRouter;
