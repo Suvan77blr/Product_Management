@@ -248,7 +248,7 @@ const ManageUsers = () => {
                 Delete User
                 </button>
 {/* Updation */}
-                <button
+                {/* <button
                     className="updateUserButton"
                     onClick={(e) => {
                         e.stopPropagation();
@@ -259,7 +259,7 @@ const ManageUsers = () => {
                     }}
                 >
                 Update User
-                </button>
+                </button> */}
             </div>
 
             <div className="displayContainer"></div>
