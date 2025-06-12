@@ -5,7 +5,6 @@ import "./components/ListItemComponent.js";
 import "./components/ViewUsersComponent.js"
 
 import useOutsideClick from "./hooks/useOutsideClick.jsx";
-import { set } from "mongoose";
 
 // Yet to define...
 import DeleteUserComponent from "./components/DeleteUserComponent.jsx";
