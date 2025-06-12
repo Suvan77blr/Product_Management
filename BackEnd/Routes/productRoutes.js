@@ -1,5 +1,5 @@
 const express = require("express");
-const {getAllProducts,getProductByName,createProduct,deleteProduct,updateProduct}= require("../Controllers/productController.js");
+const {getAllProducts,getProductById,createProduct,deleteProduct,updateProduct}= require("../Controllers/productController.js");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
@@ -18,10 +18,11 @@ const storage = multer.diskStorage
 });
 const upload= multer({storage});
 const productRouter = express.Router();
+
+productRouter.post("/", upload.single("image"), createProduct);
 productRouter.get("/",getAllProducts);
-productRouter.get("/byName",getProductByName);
+productRouter.get("/byId/:productId",getProductById);
 productRouter.delete("/byDetails",deleteProduct);
 productRouter.put("/byDetails",updateProduct);
-productRouter.post("/",upload.single("image"),createProduct);
 
 module.exports = productRouter;

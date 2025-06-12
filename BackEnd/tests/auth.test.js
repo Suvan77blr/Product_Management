@@ -28,10 +28,12 @@ describe("User Authentication", () => {
         await connectDB();
 
         // Clean up any existing test user
-        await User.deleteOne({
-            userId: testUser.userId,
-            email: testUser.email,
-        }); // #..#
+        // await User.deleteOne({
+        //     userId: testUser.userId,
+        //     email: testUser.email,
+        // }); // #..#
+        await User.deleteMany({ email: testUser.email });
+
 
         // Hash the password and create the user
         const salt = await bcrypt.genSalt(10);
@@ -60,6 +62,8 @@ describe("User Authentication", () => {
 
 afterAll(async () => {
     // Clean up test user after tests
-    await User.deleteOne({ userId: testUser.userId, email: testUser.email }); // #..#
+    // await User.deleteOne({ userId: testUser.userId, email: testUser.email }); // #..#
+/* ~~ */    await User.deleteMany({ email: testUser.email });
+
     await mongoose.connection.close();  // #..#
 });

@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const User= require("../Models/UserSchema.js");
 const bcrypt = require("bcryptjs");
 
-const getUsers = async (req,res) =>{
+const getAllUsers = async (req,res) =>{
     try{
         const users = await User.find({});
         res.status(200).json({success:true,data:users});
@@ -15,11 +15,27 @@ const getUsers = async (req,res) =>{
     }
 };
 
+const getUserById = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        if(!userId) {
+            return res.status(400).json({success: false, message: "User ID required"});
+        }
+        const user = await User.findOne({ userId });
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+        res.status(200).json({success: true, data: user});
+    } catch (error) {
+        console.error("Error in fetching the User:", error.message);
+        res.status(500).json({success: false, message: "Server Error"});
+    }
+};
 const createUser= async (req, res) => {
     const userData = req.body;
     if(!userData.userId || !userData.username || !userData.password || !userData.email || !userData.role)
     {
-        res.status(400).json({success:false, message:"Please provide all the details"});
+        return res.status(400).json({success:false, message:"Please provide all the details"});
     }
     
     // Checking uniqueness of both UserId & email.
@@ -55,11 +71,12 @@ const createUser= async (req, res) => {
     }
 };
 
- const deleteUser =async (req,res)=>{
-    const {userId,email}=req.body;  //we assume we will be getting userId and email and build the endpoint accordingly
+ const deleteUserById =async (req,res)=>{
+    const { userId }=req.body;  //we assume we will be getting userId and email and build the endpoint accordingly
+    // const {userId,email}=req.body;  //we assume we will be getting userId and email and build the endpoint accordingly
 
     try{
-        const user =await User.findOneAndDelete({userId,email});
+        const user =await User.findOneAndDelete({ userId });
         if(!user)
         {
             return res.status(400).json({success:false,message:"User not found"});
@@ -77,15 +94,16 @@ const createUser= async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-    const { username, email, ...updateData } = req.body;
+    const { userId, ...updateData } = req.body;
 
-    if (!username || !email) {
-        return res.status(400).json({ success: false, message: "username and Email are required." });
+    if (!userId || !email) {
+        return res.status(400).json({ success: false, message: "userId and Email are required." });
     }
 
     try {
         const updatedUser = await User.findOneAndUpdate(
-            { username, email },
+            { userId },
+            // { userId, email },
             updateData,
             { new: true }
         );
@@ -102,4 +120,4 @@ const updateUser = async (req, res) => {
     }
 };
 
-module.exports={getUsers,createUser,deleteUser,updateUser};
+module.exports = { getAllUsers, getUserById, createUser, deleteUserById, updateUser};

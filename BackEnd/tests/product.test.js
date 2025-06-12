@@ -22,6 +22,9 @@ const testProduct = {
     quantity: 100,
     price: 99.99,
 };
+
+let productDeleted = false;
+
 describe("Product Management", () => {
     let token;
 
@@ -69,11 +72,70 @@ describe("Product Management", () => {
         expect(res.body.success).toBeTruthy();
         expect(Array.isArray(res.body.data)).toBeTruthy();
     });
+
+    it("should retrieve a product by ID", async () => {
+        const res = await request(app)
+            .get(`/products/byId/${testProduct.productId}`)
+            .set("Authorization", `Bearer ${token}`);
+        
+        expect(res.statusCode).toEqual(200);
+        expect(res.body.success).toBeTruthy();
+        expect(res.body.data).toHaveProperty("productId", testProduct.productId);
+    });
+
+    it("should update an existing product", async () => {
+        const updatedFields = {
+            productId: testProduct.productId,
+            quantity: 200,
+            price: 149.99
+        };
+
+        const res = await request(app)
+            .put("/products/byDetails")
+            .set("Authorization", `Bearer ${token}`)
+            .send(updatedFields);
+
+        expect(res.statusCode).toEqual(200);
+        expect(res.body.success).toBeTruthy();
+        expect(res.body.data).toHaveProperty("quantity", updatedFields.quantity);
+        expect(res.body.data).toHaveProperty("price", updatedFields.price);
+    });
+
+    it("should delete an existing product", async () => {
+        const res = await request(app)
+            .delete("/products/byDetails")
+            .set("Authorization", `Bearer ${token}`)
+            .send({ productId: testProduct.productId });
+
+        expect(res.statusCode).toEqual(200);
+        expect(res.body.success).toBeTruthy();
+        expect(res.body.message).toEqual("Product deleted successfully");
+        productDeleted = true;
+    });
+
+    it("should return 404 for a deleted/non-existing product", async () => {
+        const res = await request(app)
+            .get(`/products/byId/${testProduct.productId}`)
+            .set("Authorization", `Bearer ${token}`);
+
+        expect(res.statusCode).toEqual(404);
+        expect(res.body.success).toBeFalsy();
+        expect(res.body.message).toEqual("Product not found");
+    });
+
 });
 
 afterAll(async () => {
     // Clean up test user and product
     await User.deleteOne({ userId: testUser.userId, email: testUser.email }); // #..#
-    await Product.deleteOne({ productId: testProduct.productId }); // #..#
+
+    if (!productDeleted) {
+        const existing = await Product.findOne({ productId: testProduct.productId });
+        if (existing) {
+            await Product.deleteOne({ productId: testProduct.productId });
+        }
+    }
+
+    // await Product.deleteOne({ productId: testProduct.productId }); // #..#
     await mongoose.connection.close();  // #..#
 });

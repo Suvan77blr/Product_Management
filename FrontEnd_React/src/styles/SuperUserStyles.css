@@ -1,0 +1,130 @@
+/* :root {
+    --primary-bg-color: #E4EFE7;
+    --secondary-bg-color: #FAF1E6;
+
+    --primary-heading-color: #F2E2B1;
+
+    --primary-button-color: #F2E2B1;
+    --button-hover-color: #E2C98D;
+} */
+
+:root {
+    --primary-bg-color: #7cf39b;
+    --secondary-bg-color: #f9c585;
+
+    --primary-heading-color: #8d7427;
+
+    --primary-button-color: #5aa4e1;
+    --button-hover-color: #002fff;
+}
+
+body {
+    background-color: var(--primary-bg-color);
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: auto;
+    margin: 0;
+}
+.container {
+    background-color: var(--secondary-bg-color);
+    padding: 3%;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+
+}
+
+button {
+    background-color: var(--primary-button-color);
+    border: none;
+    padding: 10%;
+    margin: 1%;
+    border-radius: 5px;
+    cursor: pointer;
+    height: 30%;
+    width: 30%;
+    
+    text-align: center;
+}
+button:hover, a > button:hover {
+    color: white;
+    transform: scale(1.2);
+    /* background-color: #E2C98D; */
+    background-color: var(--button-hover-color);
+}
+
+button:hover, a:hover {
+    color: white;
+}
+
+/* .container > .actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+} */
+
+h2 {
+    color: var(--primary-heading-color);
+    font-size: 2em;
+}
+
+label {
+    display: block;
+    margin: 10px 2px;
+    color: #333;
+}
+
+input {
+    width: 90%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* page-footer-styles */
+.page-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  /* position: absolute; */
+  background-color: var(--secondary-bg-color);
+  padding: 12px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  /* gap: 20px; */
+  /* box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1); */
+  /* z-index: 100; */
+}
+
+.page-footer button {
+  padding: 10px 20px;
+  width: 15%;
+
+  border: none;
+  border-radius: 10px;
+  /* background-color: #569ae7; */
+  background-color: var(--primary-button-color);
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.page-footer button:hover {
+    color: white;
+    /* background-color: #357ab8; */
+  background-color: var(--button-hover-color);
+}
