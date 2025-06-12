@@ -7,22 +7,38 @@ import './styles/GlobalStyles.css'
 import "./components/PageFooterComponent.js"
 import ErrorBoundary from "./components/ErrorBoundary";
 
+
 function SuperUserPage() {
     const navigate = useNavigate();
-    useEffect( () => {
-        const token = localStorage.getItem('authToken');
-        if (!token) {
-// {/**/}            window.location.href = 'Pages/LoginPage.html';
-            navigate("/login");
-        }
 
-        // Preventing back navigation after logout.
-        window.history.pushState(null, '', window.location.href);
-        window.onpopstate = function() {
-            window.history.go(1);
-        };
+//     useEffect( () => {
+//         const token = localStorage.getItem('authToken');
+//         if (!token) {
+// // {/**/}            window.location.href = 'Pages/LoginPage.html';
+//             navigate("/login");
+//         }
 
-    }, []);
+//         // Preventing back navigation after logout.
+//         window.history.pushState(null, '', window.location.href);
+//         window.onpopstate = function() {
+//             window.history.go(1);
+//         };
+
+//     }, []);
+
+        useEffect(() => {
+            const footerElement = document.querySelector("page-footer-component");
+    
+            const handleLogout = () => {
+                navigate("/login"); // React Router handles redirect
+            };
+    
+            footerElement?.addEventListener("logout", handleLogout);
+    
+            return () => {
+                footerElement?.removeEventListener("logout", handleLogout);
+            };
+        }, [navigate]);
 
     const viewReports = () => {
         alert('Functionality under development...');
