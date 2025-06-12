@@ -5,6 +5,7 @@ import "./App.css";
 // Page-Imports.
 import LoginPage from "./LoginPage";
 import SuperUserPage from "./SuperUserPage";
+import NormalUserPage from "./NormalUserPage.jsx";
 import ProtectedRoute from './components/ProtectedRoute';
 import ManageProducts from "./ManageProducts.jsx";
 import ManageUsers from "./ManageUsers.jsx"; // if Reactified
@@ -21,6 +22,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
 
         <Route path="/superuser" element={<SuperUserPage />} />
+        <Route path="/user" element={<NormalUserPage />} />
         <Route path="/products/manage" element={<ManageProducts />} />
         <Route path="/users/manage" element={<ManageUsers />} />
 

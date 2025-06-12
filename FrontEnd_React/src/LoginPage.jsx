@@ -43,9 +43,12 @@ function LoginPage() {
                     // window.location.href = '../../FrontEnd/Pages/SuperUserPage.html';
                     navigate('/superuser');
                 }
+                else if(user.role === 'user') {
+                    navigate('/user');
+                }
                 else {
                     // window.location.href = '../../FrontEnd/Pages/NormalUserPage.html';
-                    alert('Normal-User has to wait now...!');
+                    alert('Error...');
                     // navigate('normaluser');
                 }
             }
