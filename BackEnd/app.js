@@ -33,12 +33,15 @@ app.use("/", loginRouter);
 // Backend API routes to be defined before the React-static & '*'-catch.
 
 // Serving static frontend. -> 3.
-app.use(express.static(path.join(__dirname, "../FrontEnd_React/dist")));    // Serve static React assets
+
+// This line is erroring in Render
+// app.use(express.static(path.join(__dirname, "../FrontEnd_React/dist")));    // Serve static React assets
 
 // React-router catch-all. -> 4.
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../FrontEnd_React/dist/index.html"));
-});
+// This line is erroring in Render
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../FrontEnd_React/dist/index.html"));
+// });
 
 module.exports = app;
 // app.use("/uploads", express.static(path.join(__dirname, "uploads")));   // For serving uploads.
