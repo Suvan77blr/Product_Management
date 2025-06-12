@@ -2,9 +2,9 @@ name: CI - Product Management Backend
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, "**" ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, "**" ]
 
 jobs:
   backend-tests:
@@ -15,23 +15,24 @@ jobs:
         working-directory: BackEnd
 
     steps:
-      - name: 📥 Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: 🔧 Set up Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+          cache: 'npm'
 
-      - name: 📦 Install dependencies
+      - name: Install dependencies
         run: npm install
 
-      - name: 🛠️ Create .env.test file
+      - name: Create .env.test file
         run: |
           echo "MONGO_URL=${{ secrets.MONGOTESTURL }}" > .env.test
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env.test
 
-      - name: ✅ Run tests
+      - name: Run tests
         run: npm test
         env:
           NODE_ENV: test
