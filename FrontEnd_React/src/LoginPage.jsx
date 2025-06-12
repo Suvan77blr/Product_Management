@@ -95,12 +95,15 @@ function LoginPage() {
                 <p id="errorMessage" style={{ color: 'red', marginTop: '10px' }}>{errorMessage}</p>
             )}
             
-            <button 
+            {/* <button 
                 className='super-user-popup-button'
                 // onClick={() => (window.location.href = '../../FrontEnd/Pages/NormalUserPage.html')}
                 onClick={() => ( navigate('/superuser') )}
                 type = "button"
-            >Super-User</button>
+            >
+            Super-User
+            </button> */}
+
             {/* <ErrorBoundary >
                     <PageFooterComponent buttons={["dashboard", "logout"]} />
             </ErrorBoundary > */}

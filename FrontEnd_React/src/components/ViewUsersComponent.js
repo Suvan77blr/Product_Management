@@ -16,6 +16,9 @@ class ViewUsersComponent extends HTMLElement {
         `;
 
         const popupContainer = this.querySelector(".view-popup-container");
+        popupContainer.style.height = "87%";
+        popupContainer.style.width = "92%";
+        popupContainer.style.backgroundColor = "#f9c585";
 
         if (Array.isArray(this.usersList)) {
             popupContainer.innerHTML = `
