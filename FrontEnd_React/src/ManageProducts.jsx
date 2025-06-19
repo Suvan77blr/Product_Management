@@ -8,24 +8,28 @@ import DeleteProductComponent from "./components/DeleteProductComponent.jsx" ;
 import AddProductComponent from "./components/AddProductComponent.jsx";
 import UpdateProductComponent from "./components/UpdateProductsComponent.jsx";
 
-import useOutsideClick from "./hooks/useOutsideClick.jsx";
+// import useOutsideClick from "./hooks/useOutsideClick.jsx";
+import useFooterLogout from "./hooks/useFooterLogout.js";
 
 const ManageProducts = () => {
     const navigate = useNavigate();
     
-    useEffect(() => {
-        const footerElement = document.querySelector("page-footer-component");
+    // OLD way of non-DRY logout logic.
+    // useEffect(() => {
+    //     const footerElement = document.querySelector("page-footer-component");
 
-        const handleLogout = () => {
-            navigate("/login"); // React Router handles redirect
-        };
+    //     const handleLogout = () => {
+    //         navigate("/login"); // React Router handles redirect
+    //     };
 
-        footerElement?.addEventListener("logout", handleLogout);
+    //     footerElement?.addEventListener("logout", handleLogout);
 
-        return () => {
-            footerElement?.removeEventListener("logout", handleLogout);
-        };
-    }, [navigate]);
+    //     return () => {
+    //         footerElement?.removeEventListener("logout", handleLogout);
+    //     };
+    // }, [navigate]);
+
+    // const logout = useFooterLogout();
     
     // State to hold product list
     const API_ROUTE = "/products";
@@ -39,24 +43,28 @@ const ManageProducts = () => {
     const [showViewProducts, setShowViewProducts] = useState(false);
     const [showAddProduct, setShowAddProduct] = useState(false);
     const [showDeleteProduct, setShowDeleteProduct] = useState(false);
-/* Updation */
+
     const [showUpdateProduct, setShowUpdateProduct] = useState(false);
     // Handling clicks outside the popups to close them.
 
     const listItemRef = useRef(null);
     const addProductRef = useRef(null);
     const deleteProductRef = useRef(null);
-/* Updation */
-    const updateProductRef = useRef(null);    
+
+    const updateProductRef = useRef(null);
+    
+/* New Updation */
+    const pageFooterRef = useRef(null);
+    const logout = useFooterLogout();    
 
     useEffect( () => {
         const listEl = listItemRef.current;
         const addEl = addProductRef.current;
         const delEl = deleteProductRef.current;
-/* Updation */
+
         const updateEl = updateProductRef.current;
 
-/* Updation */        
+        
         if (!listEl && !addEl && !delEl && !updateEl) return;
 
         const handleListClose = (e) => {
@@ -71,7 +79,6 @@ const ManageProducts = () => {
             e.stopPropagation();
             setShowDeleteProduct(false);
         };
-/* Updation */
         const handleUpdateClose = (e) => {
             e.stopPropagation();
             setShowUpdateProduct(false);
@@ -83,7 +90,6 @@ const ManageProducts = () => {
         if (listEl) listEl.addEventListener("close-list", handleListClose);
         if (addEl) addEl.addEventListener("close-add", handleAddClose);
         if (delEl) delEl.addEventListener("close-delete", handleDeleteClose);
-/* Updation */
         if (updateEl) updateEl.addEventListener("close-update", handleUpdateClose);
 
         return () => {
@@ -93,17 +99,36 @@ const ManageProducts = () => {
             if (listEl?.removeEventListener) listEl.removeEventListener("close-list", handleListClose);
             if (addEl?.removeEventListener) addEl.removeEventListener("close-add", handleAddClose);
             if (delEl?.removeEventListener) delEl.removeEventListener("close-delete", handleDeleteClose);
-/* Updation */
             if (updateEl?.removeEventListener) updateEl.removeEventListener("close-update", handleUpdateClose);
         };
     }, [showViewProducts, showAddProduct, showDeleteProduct, showUpdateProduct]);
-/* Updation */
 
-    useOutsideClick(listItemRef, () => setShowViewProducts(false));
-    useOutsideClick(addProductRef, () => setShowAddProduct(false));
-    useOutsideClick(deleteProductRef, () => setShowDeleteProduct(false));
-/* Updation */
-    useOutsideClick(updateProductRef, () => setShowUpdateProduct(false));
+
+//     useOutsideClick(listItemRef, () => setShowViewProducts(false));
+//     useOutsideClick(addProductRef, () => setShowAddProduct(false));
+//     useOutsideClick(deleteProductRef, () => setShowDeleteProduct(false));
+// 
+//     useOutsideClick(updateProductRef, () => setShowUpdateProduct(false));
+
+
+/* New Updation */
+    useEffect(() => {
+        const footerEl = pageFooterRef.current;
+
+        const handleLogout = () => {
+            logout();
+        };
+
+        if(footerEl) {
+            footerEl.addEventListener("logout", handleLogout);
+        }
+
+        return () => {
+            if(footerEl) {
+                footerEl.removeEventListener("logout", handleLogout);
+            }
+        };
+    }, [logout]);
 
     // Fetching products from API.
     const fetchProducts = async () => {
@@ -203,7 +228,7 @@ const ManageProducts = () => {
                         setShowViewProducts(true);
                         setShowAddProduct(false);
                         setShowDeleteProduct(false);
-{/* Updation */}        setShowUpdateProduct(false);
+                        setShowUpdateProduct(false);
                     }}
                 >
                 View Products
@@ -216,7 +241,7 @@ const ManageProducts = () => {
                         setShowAddProduct(true);
                         setShowViewProducts(false);
                         setShowDeleteProduct(false);
-{/* Updation */}        setShowUpdateProduct(false);                        
+{}        setShowUpdateProduct(false);                        
                     }}
                 >
                 Add Product
@@ -228,12 +253,12 @@ const ManageProducts = () => {
                         setShowDeleteProduct(true);
                         setShowViewProducts(false);
                         setShowAddProduct(false);
-{/* Updation */}        setShowUpdateProduct(false);
+{}        setShowUpdateProduct(false);
                     }}
                 >
                 Delete Product
                 </button>
-{/* Updation */}
+{}
                 <button
                     className="updateProductButton"
                     onClick={(e) => {
@@ -305,7 +330,7 @@ const ManageProducts = () => {
             // />
             )}
 
-{/* Updation */}        
+{}        
             {showUpdateProduct && (
                 <UpdateProductComponent 
                     ref={updateProductRef}
@@ -316,7 +341,11 @@ const ManageProducts = () => {
             )}
 
             {/* Page footer component */}
-            <page-footer-component buttons={JSON.stringify(["dashboard", "back", "logout"])} />
+            <page-footer-component 
+                ref={pageFooterRef}
+                buttons={JSON.stringify(["back", "logout"])} 
+            />
+            {/* <page-footer-component buttons={JSON.stringify(["dashboard", "back", "logout"])} /> */}
         </div>
     );
 };

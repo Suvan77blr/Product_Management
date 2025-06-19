@@ -1,11 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
-// import './styles/SuperUserStyles.css'
+
 import './styles/GlobalStyles.css'
 
-// import PageFooterComponent from "./components/PageFooterComponent";
+
 import "./components/PageFooterComponent.js"
 import ErrorBoundary from "./components/ErrorBoundary";
+import useFooterLogout from "./hooks/useFooterLogout.js";
 
 
 function SuperUserPage() {
@@ -26,19 +27,40 @@ function SuperUserPage() {
 
 //     }, []);
 
-        useEffect(() => {
-            const footerElement = document.querySelector("page-footer-component");
+    const pageFooterRef = useRef(null);
+    const logout = useFooterLogout();
+
+    useEffect(() => {
+        const footerEl = pageFooterRef.current;
+
+        const handleLogout = () => {
+            logout(); // handles token removal, redirect, back-prevention
+        };
+
+        if (footerEl) {
+            footerEl.addEventListener("logout", handleLogout);
+        }
+
+        return () => {
+            if (footerEl) {
+                footerEl.removeEventListener("logout", handleLogout);
+            }
+        };
+    }, [logout]);
+
+        // useEffect(() => {
+        //     const footerElement = document.querySelector("page-footer-component");
     
-            const handleLogout = () => {
-                navigate("/login"); // React Router handles redirect
-            };
+        //     const handleLogout = () => {
+        //         navigate("/login"); // React Router handles redirect
+        //     };
     
-            footerElement?.addEventListener("logout", handleLogout);
+        //     footerElement?.addEventListener("logout", handleLogout);
     
-            return () => {
-                footerElement?.removeEventListener("logout", handleLogout);
-            };
-        }, [navigate]);
+        //     return () => {
+        //         footerElement?.removeEventListener("logout", handleLogout);
+        //     };
+        // }, [navigate]);
 
     const viewReports = () => {
         alert('Functionality under development...');
@@ -59,8 +81,11 @@ function SuperUserPage() {
                 </div>
             </div>
 
-            {/* Stub for PageFooterComponent (until Reactification is done): */}
-            <page-footer-component buttons={JSON.stringify(["logout"])} />
+             {/* Footer Web Component with attached ref */}
+            <page-footer-component 
+                ref = {pageFooterRef}
+                buttons={JSON.stringify(["logout"])} 
+            />
         </>
     )
 }

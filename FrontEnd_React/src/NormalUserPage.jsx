@@ -10,24 +10,25 @@ import './styles/GlobalStyles.css'
 // import PageFooterComponent from "./components/PageFooterComponent";
 import "./components/PageFooterComponent.js"
 import ErrorBoundary from "./components/ErrorBoundary";
-
+import useFooterLogout from "./hooks/useFooterLogout.js";
 
 function NormalUserPage() {
     const navigate = useNavigate();
 
-        useEffect(() => {
-            const footerElement = document.querySelector("page-footer-component");
-    
-            const handleLogout = () => {
-                navigate("/login"); // React Router handles redirect
-            };
-    
-            footerElement?.addEventListener("logout", handleLogout);
-    
-            return () => {
-                footerElement?.removeEventListener("logout", handleLogout);
-            };
-        }, [navigate]);
+    useFooterLogout();
+    // useEffect(() => {
+    //     const footerElement = document.querySelector("page-footer-component");
+
+    //     const handleLogout = () => {
+    //         navigate("/login"); // React Router handles redirect
+    //     };
+
+    //     footerElement?.addEventListener("logout", handleLogout);
+
+    //     return () => {
+    //         footerElement?.removeEventListener("logout", handleLogout);
+    //     };
+    // }, [navigate]);
 
     const viewReports = () => {
         alert('Functionality under development...');
