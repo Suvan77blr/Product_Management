@@ -5,15 +5,7 @@ const bcrypt = require("bcryptjs");
 const { connectDB } = require("../Database/ConnectorDB.js");
 const mongoose = require("mongoose");
 
-const timestamp = Date.now(); // Ensures uniqueness         // #..#
-
-const testUser = {
-    userId: `user-${timestamp}`, // #..#
-    email: `producttestuser${timestamp}@example.com`, // #..#
-    password: "password123",
-    username: "producttestuser",
-    role: "user",
-};
+let testUser;
 
 describe("User Authentication", () => {
     // const testUser = {
@@ -27,11 +19,16 @@ describe("User Authentication", () => {
         // Connect to the test database
         await connectDB();
 
+        const timestamp = Date.now(); // Ensures uniqueness         // #..#
+        testUser = {
+            userId: `user-${timestamp}`, // #..#
+            email: `producttestuser${timestamp}@example.com`, // #..#
+            password: "password123",
+            username: "producttestuser",
+            role: "user",
+        };
+
         // Clean up any existing test user
-        // await User.deleteOne({
-        //     userId: testUser.userId,
-        //     email: testUser.email,
-        // }); // #..#
         await User.deleteMany({ email: testUser.email });
 
 

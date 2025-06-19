@@ -6,37 +6,41 @@ const bcrypt = require("bcryptjs");
 const { connectDB } = require("../Database/ConnectorDB.js");
 const mongoose = require("mongoose");
 
-const timestamp = Date.now(); // Ensures uniqueness         // #..#
-
-const testUser = {
-    userId: `user-${timestamp}`,            // #..#
-    email: `producttestuser${timestamp}@example.com`,   // #..#
-    password: "password123",
-    username: "producttestuser",
-    role: "user",
-};
-
-const testProduct = {
-    productId: `product-${timestamp}`, // #..#
-    name: `Test Product ${timestamp}`, // #..#
-    quantity: 100,
-    price: 99.99,
-};
+let testUser;
+let testProduct;
+let token;
 
 let productDeleted = false;
 
 describe("Product Management", () => {
-    let token;
 
     beforeAll(async () => {
-        // Connect to the test database
         await connectDB();
 
+        const timestamp = Date.now(); // Ensures uniqueness         // #..#
+
+        testUser = {
+            userId: `user-${timestamp}`,            // #..#
+            email: `producttestuser${timestamp}@example.com`,   // #..#
+            password: "password123",
+            username: "producttestuser",
+            role: "user",
+        };
+
+        testProduct = {
+            productId: `product-${timestamp}`, // #..#
+            name: `Test Product ${timestamp}`, // #..#
+            quantity: 100,
+            price: 99.99,
+        };
+
         // Clean up any existing test user
-        await User.deleteOne({
-            userId: testUser.userId,
-            email: testUser.email,
-        }); // #..#
+        // await User.deleteOne({
+        //     userId: testUser.userId,
+        //     email: testUser.email,
+        // }); 
+        // Clean up any existing test user
+        await User.deleteMany({ email: testUser.email }); // #..#
 
         // Hash the password and create the user
         const salt = await bcrypt.genSalt(10);
