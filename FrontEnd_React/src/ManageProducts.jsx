@@ -8,7 +8,7 @@ import DeleteProductComponent from "./components/DeleteProductComponent.jsx" ;
 import AddProductComponent from "./components/AddProductComponent.jsx";
 import UpdateProductComponent from "./components/UpdateProductsComponent.jsx";
 
-import useOutsideClick from "./hooks/useOutsideClick.jsx";
+// import useOutsideClick from "./hooks/useOutsideClick.jsx";
 
 const ManageProducts = () => {
     const navigate = useNavigate();
@@ -17,6 +17,7 @@ const ManageProducts = () => {
         const footerElement = document.querySelector("page-footer-component");
 
         const handleLogout = () => {
+            localStorage.removeItem("authToken");
             navigate("/login"); // React Router handles redirect
         };
 
@@ -99,11 +100,11 @@ const ManageProducts = () => {
     }, [showViewProducts, showAddProduct, showDeleteProduct, showUpdateProduct]);
 /* Updation */
 
-    useOutsideClick(listItemRef, () => setShowViewProducts(false));
-    useOutsideClick(addProductRef, () => setShowAddProduct(false));
-    useOutsideClick(deleteProductRef, () => setShowDeleteProduct(false));
-/* Updation */
-    useOutsideClick(updateProductRef, () => setShowUpdateProduct(false));
+//     useOutsideClick(listItemRef, () => setShowViewProducts(false));
+//     useOutsideClick(addProductRef, () => setShowAddProduct(false));
+//     useOutsideClick(deleteProductRef, () => setShowDeleteProduct(false));
+// /* Updation */
+//     useOutsideClick(updateProductRef, () => setShowUpdateProduct(false));
 
     // Fetching products from API.
     const fetchProducts = async () => {
@@ -185,9 +186,11 @@ const ManageProducts = () => {
         };
         const observer = document.body;
         observer.addEventListener("product-added", handleProductAdded);
+        observer.addEventListener("product-updated", handleProductAdded);
 
         return () => {
             observer.removeEventListener("product-added", handleProductAdded);
+            observer.removeEventListener("product-updated", handleProductAdded);
         };
     }, []);
     
@@ -316,7 +319,7 @@ const ManageProducts = () => {
             )}
 
             {/* Page footer component */}
-            <page-footer-component buttons={JSON.stringify(["dashboard", "back", "logout"])} />
+            <page-footer-component buttons={JSON.stringify(["back", "logout"])} />
         </div>
     );
 };

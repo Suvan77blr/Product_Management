@@ -4,7 +4,7 @@ import "./components/PageFooterComponent.js";
 import "./components/ListItemComponent.js";
 import "./components/ViewUsersComponent.js"
 
-import useOutsideClick from "./hooks/useOutsideClick.jsx";
+// import useOutsideClick from "./hooks/useOutsideClick.jsx";
 
 // Yet to define...
 import DeleteUserComponent from "./components/DeleteUserComponent.jsx";
@@ -18,6 +18,7 @@ const ManageUsers = () => {
         const footerElement = document.querySelector("page-footer-component");
 
         const handleLogout = () => {
+            localStorage.removeItem("authToken");
             navigate("/login"); // React Router handles redirect
         };
 
@@ -104,11 +105,11 @@ const ManageUsers = () => {
     }, [showViewUsers, showAddUser, showDeleteUser, showUpdateUser]);
 /* Updation */
 
-    useOutsideClick(listItemRef, () => setShowViewUsers(false));
-    useOutsideClick(addUserRef, () => setShowAddUser(false));
-    useOutsideClick(deleteUserRef, () => setShowDeleteUser(false));
+    // useOutsideClick(listItemRef, () => setShowViewUsers(false));
+    // useOutsideClick(addUserRef, () => setShowAddUser(false));
+    // useOutsideClick(deleteUserRef, () => setShowDeleteUser(false));
 /* Updation */
-    useOutsideClick(updateUserRef, () => setShowUpdateUser(false));
+    // useOutsideClick(updateUserRef, () => setShowUpdateUser(false));
 
     // Fetching Users from API.
     const fetchUsers = async () => {
@@ -339,7 +340,7 @@ const ManageUsers = () => {
             )}
 
             {/* Page footer component */}
-            <page-footer-component buttons={JSON.stringify(["dashboard", "back", "logout"])} />
+            <page-footer-component buttons={JSON.stringify(["back", "logout"])} />
         </div>
     );
 };

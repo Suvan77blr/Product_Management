@@ -19,6 +19,7 @@ function NormalUserPage() {
             const footerElement = document.querySelector("page-footer-component");
     
             const handleLogout = () => {
+                localStorage.removeItem("authToken");
                 navigate("/login"); // React Router handles redirect
             };
     
