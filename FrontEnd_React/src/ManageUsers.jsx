@@ -4,32 +4,29 @@ import "./components/PageFooterComponent.js";
 import "./components/ListItemComponent.js";
 import "./components/ViewUsersComponent.js"
 
-// import useOutsideClick from "./hooks/useOutsideClick.jsx";
+import useOutsideClick from "./hooks/useOutsideClick.jsx";
 
+// Yet to define...
 import DeleteUserComponent from "./components/DeleteUserComponent.jsx";
 import AddUserComponent from "./components/AddUserComponent.jsx";
 import UpdateUserComponent from "./components/UpdateUserComponent.jsx";
 
-import useFooterLogout from "./hooks/useFooterLogout.js";
-
 const ManageUsers = () => {
     const navigate = useNavigate();
     
-    useFooterLogout();
+    useEffect(() => {
+        const footerElement = document.querySelector("page-footer-component");
 
-    // useEffect(() => {
-    //     const footerElement = document.querySelector("page-footer-component");
+        const handleLogout = () => {
+            navigate("/login"); // React Router handles redirect
+        };
 
-    //     const handleLogout = () => {
-    //         navigate("/login"); // React Router handles redirect
-    //     };
+        footerElement?.addEventListener("logout", handleLogout);
 
-    //     footerElement?.addEventListener("logout", handleLogout);
-
-    //     return () => {
-    //         footerElement?.removeEventListener("logout", handleLogout);
-    //     };
-    // }, [navigate]);
+        return () => {
+            footerElement?.removeEventListener("logout", handleLogout);
+        };
+    }, [navigate]);
     
     // State to hold user list
     const API_ROUTE = "/users";
@@ -43,27 +40,24 @@ const ManageUsers = () => {
     const [showViewUsers, setShowViewUsers] = useState(false);
     const [showAddUser, setShowAddUser] = useState(false);
     const [showDeleteUser, setShowDeleteUser] = useState(false);
-
+/* Updation */
     const [showUpdateUser, setShowUpdateUser] = useState(false);
     // Handling clicks outside the popups to close them.
 
     const listItemRef = useRef(null);
     const addUserRef = useRef(null);
     const deleteUserRef = useRef(null);
+/* Updation */
     const updateUserRef = useRef(null);    
-
-/* New Updation */
-    const pageFooterRef = useRef(null);
-    const logout = useFooterLogout();
 
     useEffect( () => {
         const listEl = listItemRef.current;
         const addEl = addUserRef.current;
         const delEl = deleteUserRef.current;
-
+/* Updation */
         const updateEl = updateUserRef.current;
 
-        
+/* Updation */        
         if (!listEl && !addEl && !delEl && !updateEl) return;
 
         const handleListClose = (e) => {
@@ -82,7 +76,7 @@ const ManageUsers = () => {
             e.stopPropagation();
             setShowDeleteUser(false);
         };
-
+/* Updation */
         const handleUpdateClose = (e) => {
             e.stopPropagation();
             setShowUpdateUser(false);
@@ -94,7 +88,7 @@ const ManageUsers = () => {
         if (listEl) listEl.addEventListener("close-list", handleListClose);
         if (addEl) addEl.addEventListener("close-add", handleAddClose);
         if (delEl) delEl.addEventListener("close-delete", handleDeleteClose);
-
+/* Updation */
         if (updateEl) updateEl.addEventListener("close-update", handleUpdateClose);
 
         return () => {
@@ -104,36 +98,17 @@ const ManageUsers = () => {
             if (listEl?.removeEventListener) listEl.removeEventListener("close-list", handleListClose);
             if (addEl?.removeEventListener) addEl.removeEventListener("close-add", handleAddClose);
             if (delEl?.removeEventListener) delEl.removeEventListener("close-delete", handleDeleteClose);
-
+/* Updation */
             if (updateEl?.removeEventListener) updateEl.removeEventListener("close-update", handleUpdateClose);
         };
     }, [showViewUsers, showAddUser, showDeleteUser, showUpdateUser]);
+/* Updation */
 
-
-    // useOutsideClick(listItemRef, () => setShowViewUsers(false));
-    // useOutsideClick(addUserRef, () => setShowAddUser(false));
-    // useOutsideClick(deleteUserRef, () => setShowDeleteUser(false));
-
-    // useOutsideClick(updateUserRef, () => setShowUpdateUser(false));
-
-/* New Updation */
-    useEffect(() => {
-        const footerEl = pageFooterRef.current;
-
-        const handleLogout = () => {
-            logout();
-        };
-
-        if(footerEl) {
-            footerEl.addEventListener("logout", handleLogout);
-        }
-
-        return () => {
-            if(footerEl) {
-                footerEl.removeEventListener("logout", handleLogout);
-            }
-        };
-    }, [logout]);
+    useOutsideClick(listItemRef, () => setShowViewUsers(false));
+    useOutsideClick(addUserRef, () => setShowAddUser(false));
+    useOutsideClick(deleteUserRef, () => setShowDeleteUser(false));
+/* Updation */
+    useOutsideClick(updateUserRef, () => setShowUpdateUser(false));
 
     // Fetching Users from API.
     const fetchUsers = async () => {
@@ -242,7 +217,7 @@ const ManageUsers = () => {
                         setShowViewUsers(true);
                         setShowAddUser(false);
                         setShowDeleteUser(false);
-{}        setShowUpdateUser(false);
+{/* Updation */}        setShowUpdateUser(false);
                     }}
                 >
                 View Users
@@ -255,7 +230,7 @@ const ManageUsers = () => {
                         setShowAddUser(true);
                         setShowViewUsers(false);
                         setShowDeleteUser(false);
-{}        setShowUpdateUser(false);                        
+{/* Updation */}        setShowUpdateUser(false);                        
                     }}
                 >
                 Add User
@@ -267,12 +242,12 @@ const ManageUsers = () => {
                         setShowDeleteUser(true);
                         setShowViewUsers(false);
                         setShowAddUser(false);
-{}        setShowUpdateUser(false);
+{/* Updation */}        setShowUpdateUser(false);
                     }}
                 >
                 Delete User
                 </button>
-{}
+{/* Updation */}
                 {/* <button
                     className="updateUserButton"
                     onClick={(e) => {
@@ -353,7 +328,7 @@ const ManageUsers = () => {
             // />
             )}
 
-{}        
+{/* Updation */}        
             {showUpdateUser && (
                 <UpdateUserComponent 
                     ref={updateUserRef}
@@ -364,8 +339,7 @@ const ManageUsers = () => {
             )}
 
             {/* Page footer component */}
-            <page-footer-component buttons={JSON.stringify(["back", "logout"])} />
-            {/* <page-footer-component buttons={JSON.stringify(["dashboard", "back", "logout"])} /> */}
+            <page-footer-component buttons={JSON.stringify(["dashboard", "back", "logout"])} />
         </div>
     );
 };
