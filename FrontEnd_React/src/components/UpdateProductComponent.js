@@ -111,8 +111,13 @@ class UpdateProductComponent extends HTMLElement {
                 delete updatedProduct.image; // Avoid sending undefined or [object File]
             }
             console.log("Sending Payload:", updatedProduct);
+
+            const API_ROUTE = "/products/byDetails";
+            const IS_DEVELOPMENT = import.meta.env.MODE === 'development';
+            const rqstURL = IS_DEVELOPMENT ? API_ROUTE : `${import.meta.env.VITE_API_BASE_URL}${API_ROUTE}`;
+
             try {
-                const response = await fetch("/products/byDetails", {
+                const response = await fetch(`${rqstURL}`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(updatedProduct)

@@ -22,7 +22,7 @@ class UpdateButtonComponent extends HTMLElement {
         this.addEventListener("click", async (event) => {
             event.preventDefault();
 
-            alert(`${this.listItemId} is about to be updated!`);
+            console.log(`${this.listItemId} is about to be updated!`);
 
             const API_ROUTE = "/products/byId";
             const IS_DEVELOPMENT = import.meta.env.MODE === "development";

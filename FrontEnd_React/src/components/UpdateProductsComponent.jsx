@@ -1,7 +1,7 @@
 import React, { useState, forwardRef, useRef, useEffect } from "react";
 
-const UpdateProductComponent = forwardRef(({onClose, popupStyle}, ref) => {
-    const [productId, setProductId] = useState("");
+const UpdateProductComponent = forwardRef(({productId: initialProductId = "", onClose, popupStyle}, ref) => {
+    const [productId, setProductId] = useState(initialProductId);
     const [product, setProduct] = useState(null);
     const [status, setStatus] = useState("");
 
@@ -19,18 +19,18 @@ const UpdateProductComponent = forwardRef(({onClose, popupStyle}, ref) => {
     }, [ref]);
 
     // Outside click detection.
-    useEffect(() => {
-        const handleOutsideClick = (event) => {
-            if (!localRef.current || localRef.current.contains(event.target)) {
-                return;
-            }
-            onClose?.();
-        };
-        document.addEventListener("mousedown", handleOutsideClick);
-        return () => {
-            document.removeEventListener("mousedown", handleOutsideClick);
-        };
-    }, [onClose]);
+    // useEffect(() => {
+    //     const handleOutsideClick = (event) => {
+    //         if (!localRef.current || localRef.current.contains(event.target)) {
+    //             return;
+    //         }
+    //         onClose?.();
+    //     };
+    //     document.addEventListener("mousedown", handleOutsideClick);
+    //     return () => {
+    //         document.removeEventListener("mousedown", handleOutsideClick);
+    //     };
+    // }, [onClose]);
     
     // Fetching the product details ... 
     const fetchProductDetails = async () => {
